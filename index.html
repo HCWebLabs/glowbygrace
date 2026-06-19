@@ -1,0 +1,4509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Glow by Grace | Brow &amp; Lash Artist — Nashville, TN</title>
+
+  <!-- SEO -->
+  <meta name="description"
+        content="Glow by Grace — expert brow shaping, tinting, lamination, lash lifts and extensions in Nashville, TN. Book your appointment today.">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="Glow by Grace">
+  <meta property="og:title"       content="Glow by Grace | Brow &amp; Lash Artist — Nashville, TN">
+  <meta property="og:description" content="Effortless beauty, expertly crafted. Brow &amp; lash services in Nashville, TN.">
+  <meta property="og:url"         content="https://glowbygrace.com">
+  <meta property="og:image"       content="https://glowbygrace.com/assets/img/pexels-israelzin-3724431.webp">
+  <meta property="og:image:alt"   content="Close-up eye portrait — Glow by Grace, Nashville">
+  <meta property="og:locale"      content="en_US">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="Glow by Grace | Brow &amp; Lash Artist">
+  <meta name="twitter:description" content="Effortless beauty, expertly crafted.">
+  <meta name="twitter:image"       content="https://glowbygrace.com/assets/img/pexels-israelzin-3724431.webp">
+  <meta name="twitter:image:alt"   content="Glow by Grace — brow and lash studio, Nashville TN">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="https://glowbygrace.com">
+
+  <!-- Fonts: preconnect first, then load -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap"
+    rel="stylesheet">
+
+  <!-- Hero image: preload for LCP -->
+  <link
+    rel="preload"
+    as="image"
+    href="assets/img/pexels-israelzin-3724431.webp"
+    fetchpriority="high">
+
+  <!-- Font Awesome — jsDelivr CDN, no integrity hash per HCWL standard -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+
+  <style>
+/* ════════════════════════════════════════════════════════════════════
+   GLOW BY GRACE — v3 CSS Architecture
+   ════════════════════════════════════════════════════════════════════
+
+   @layer declaration order (low → high cascade priority):
+   ─────────────────────────────────────────────────────────────────
+   reset      Browser normalisation. No design decisions.
+   tokens     Custom properties only. No selectors beyond :root.
+   base       Opinionated element defaults that require tokens.
+   layout     Page-structure primitives: header, main, footer, section.
+   components Self-contained UI blocks: hero, about, services, etc.
+   utilities  Single-purpose helpers: .sr-only, .reveal, .no-measure.
+   states     Animations, @keyframes, interaction overrides, prefs.
+
+   External unlayered CSS (e.g. Font Awesome via <link>) sits in the
+   implicit outer layer and outranks ALL named @layer blocks.
+   Within our own codebase, this declaration order is absolute —
+   no !important needed, no specificity wars.
+
+   BREAKPOINT SYSTEM — HCWL Standard (min-width, mobile-first)
+   ─────────────────────────────────────────────────────────────────
+   Base   320px  20rem  — smallest supported viewport (no query needed)
+   xs     480px  30rem  — large phones / landscape
+   sm     640px  40rem  — small tablets / large phones
+   md     768px  48rem  — tablets / nav breakpoint
+   lg    1024px  64rem  — laptops
+   xl    1280px  80rem  — standard desktops
+   2xl   1440px  90rem  — wide / max content (fluid values handle this)
+
+   FLUID SCALE FORMULA
+   ─────────────────────────────────────────────────────────────────
+   clamp(min, intercept + slope * vw, max)
+   slope     = (max_px - min_px) / 1120 × 100   (1120 = 1440 - 320)
+   intercept = min_px - slope × 320 / 100
+   All values verified at 320px, 480px, 768px, 1280px, 1440px.
+
+════════════════════════════════════════════════════════════════════ */
+
+@layer reset, tokens, base, layout, components, utilities, states;
+
+
+/* ══════════════════════════════════════════════════════════════════
+   LAYER: RESET
+   Browser normalisation only. Zero design decisions here.
+   Source: combination of Andy Bell's modern-reset, Josh Comeau's
+   custom reset, and CSS Cascade 5 best practices (2024–2025).
+══════════════════════════════════════════════════════════════════ */
+@layer reset {
+
+  /* 1. Universal box model + remove default spacing */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* 2. html root — document-level rendering controls */
+  html {
+    /* Respect user font-size preferences */
+    font-size: 100%;
+
+    /* Prevent mobile browsers inflating font sizes in landscape */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+
+    /* Tab character rendering */
+    tab-size: 4;
+    -moz-tab-size: 4;
+
+    /* Typographic refinement */
+    hanging-punctuation: first last;
+
+    /* Scroll */
+    scroll-behavior: smooth;
+
+    /* Prevent horizontal overflow without breaking position:sticky */
+    overflow-x: clip;
+
+    /* Reserve scrollbar gutter to prevent layout shift */
+    scrollbar-gutter: stable;
+
+    /* Declare light colour scheme — prevents dark-mode flash */
+    color-scheme: light;
+
+    /* Enable CSS transitions to/from auto dimensions (Chrome 129+) */
+    interpolate-size: allow-keywords;
+  }
+
+  /* 3. Body — minimal base, design values applied in @layer base */
+  body {
+    min-height: 100dvh;
+    line-height: 1.5; /* safe fallback before tokens load */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  /* 4. Media elements — block display + constrain to container */
+  img, picture, video, canvas, svg, iframe {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Height auto on replaced elements to prevent aspect-ratio distortion */
+  img, video { height: auto; }
+
+  /* 5. Form controls — inherit typography from parent */
+  input, button, textarea, select, optgroup {
+    font: inherit;
+    color: inherit;
+  }
+
+  /* Remove default button chrome */
+  button {
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+
+  /* Textarea resize axis */
+  textarea { resize: vertical; }
+
+  /* 6. Lists — remove default styling (re-applied semantically in base) */
+  ul, ol { list-style: none; }
+
+  /* 7. Links — remove color/underline inheritance override */
+  a { color: inherit; text-decoration: none; }
+
+  /* 8. Typography — opinionated element resets */
+  h1, h2, h3, h4, h5, h6 {
+    /* Remove bold weight — design layer sets intentional weights */
+    font-weight: inherit;
+    font-size: inherit;
+    /* Balance heading line breaks */
+    text-wrap: balance;
+  }
+
+  p, li, dt, dd, blockquote, figcaption {
+    /* Prevent widows (single word on last line) */
+    text-wrap: pretty;
+  }
+
+  /* Remove italic from address — applied intentionally in base */
+  address { font-style: normal; }
+
+  /* 9. Inline semantics — explicit defaults */
+  strong, b  { font-weight: 700; }
+  em, i      { font-style: italic; }
+
+  abbr[title] {
+    text-decoration: underline dotted;
+    cursor: help;
+    text-decoration-skip-ink: none;
+  }
+
+  sub, sup {
+    font-size: 0.75em;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+  sub { bottom: -0.25em; }
+  sup { top: -0.5em; }
+
+  /* 10. SVG fill inherits text colour by default */
+  svg { fill: currentColor; }
+
+  /* 11. Table reset */
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+  }
+
+  /* 12. Interactive elements */
+  summary { cursor: pointer; }
+
+  /* 13. Hidden attribute must always hide */
+  [hidden] { display: none !important; }
+
+  /* 14. Disabled state */
+  [disabled] { cursor: not-allowed; }
+
+  /* 15. Remove animations for people who prefer them off
+         Placed in reset so it beats any @layer declaration */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration:        0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration:       0.01ms !important;
+      scroll-behavior:           auto !important;
+    }
+  }
+
+} /* end @layer reset */
+
+
+/* ══════════════════════════════════════════════════════════════════
+   LAYER: TOKENS
+   All CSS custom properties. No selectors beyond :root and
+   @media-scoped :root overrides. Zero visual rules here.
+══════════════════════════════════════════════════════════════════ */
+@layer tokens {
+
+  :root {
+
+    /* ── COLOUR PALETTE ────────────────────────────────────
+       Raw palette — 5 named values + 2 transparent aliases.
+       All colours used only via semantic aliases below. */
+    --_ivory:    #FDFAF6;
+    --_cream:    #F5EFE8;
+    --_espresso: #2C1F1A;
+    --_mocha:    #A47764;
+    --_taupe:    #C8B8AE;
+
+    /* Semantic surface aliases */
+    --color-bg:        var(--_ivory);
+    --color-bg-alt:    var(--_cream);
+    --color-bg-dark:   var(--_espresso);
+    --color-text:      var(--_espresso);
+    --color-text-inv:  var(--_ivory);
+    --color-text-muted:var(--_taupe);
+    --color-accent:    var(--_mocha);
+
+    /* Border / divider helpers */
+    --color-rule:      rgba(44, 31, 26, 0.18);
+    --color-rule-inv:  rgba(253, 250, 246, 0.18);
+
+    /* ── TYPOGRAPHY — FAMILIES ─────────────────────────────*/
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body:    'DM Sans', system-ui, -apple-system, sans-serif;
+
+    /* ── TYPOGRAPHY — FLUID TYPE SCALE ─────────────────────
+       Range: 320px → 1440px  (Δ = 1120px)
+       slope     = (max - min) / 1120 × 100
+       intercept = min - slope × 320 / 100
+
+       Token      min   max    @320  @480  @768  @1280 @1440
+       ──────────────────────────────────────────────────────
+       --ft-2xs    10    12      10  10.3  10.8   11.7   12
+       --ft-xs     11    13      11  11.3  11.8   12.7   13
+       --ft-sm     13    15      13  13.3  13.8   14.7   15
+       --ft-base   15    18      15  15.4  16.2   17.6   18
+       --ft-md     17    22      17  17.7  19.0   21.3   22
+       --ft-lg     20    28      20  21.1  23.2   26.9   28
+       --ft-xl     24    36      24  25.7  28.8   34.3   36
+       --ft-2xl    32    52      32  34.9  40.0   49.1   52
+       --ft-3xl    48    88      48  55.1  69.4   96.6   88*
+       --ft-hero   48   112      48  57.1  73.6  102.9  112
+       (* 3xl soft-caps at 5.5rem; hero runs to 7rem)
+    ────────────────────────────────────────────────────── */
+    --ft-2xs:  clamp(0.625rem,  0.589rem + 0.179vw, 0.75rem);
+    --ft-xs:   clamp(0.6875rem, 0.652rem + 0.179vw, 0.8125rem);
+    --ft-sm:   clamp(0.8125rem, 0.777rem + 0.179vw, 0.9375rem);
+    --ft-base: clamp(0.9375rem, 0.884rem + 0.268vw, 1.125rem);
+    --ft-md:   clamp(1.0625rem, 0.973rem + 0.446vw, 1.375rem);
+    --ft-lg:   clamp(1.25rem,   1.107rem + 0.714vw, 1.75rem);
+    --ft-xl:   clamp(1.5rem,    1.286rem + 1.071vw, 2.25rem);
+    --ft-2xl:  clamp(2rem,      1.643rem + 1.786vw, 3.25rem);
+    --ft-3xl:  clamp(3rem,      1.929rem + 3.571vw, 5.5rem);
+    --ft-hero: clamp(3rem,      1.857rem + 5.714vw, 7rem);
+
+    /* ── TYPOGRAPHY — LINE HEIGHTS ─────────────────────────
+       Unitless. Tighter at display size, looser for body prose. */
+    --lh-display: 1.0;   /* hero h1, oversized display */
+    --lh-heading: 1.15;  /* section h2, article headings */
+    --lh-snug:    1.3;   /* h3, card headings */
+    --lh-ui:      1.35;  /* labels, buttons, nav, captions */
+    --lh-body:    1.65;  /* paragraph prose */
+    --lh-loose:   1.85;  /* intro text, about copy */
+
+    /* ── TYPOGRAPHY — LETTER SPACING ───────────────────────*/
+    --ls-tight:   -0.02em;
+    --ls-normal:   0em;
+    --ls-wide:     0.04em;
+    --ls-wider:    0.1em;
+    --ls-widest:   0.2em;
+
+    /* ── TYPOGRAPHY — MEASURE (max line length) ────────────*/
+    --measure:    68ch;  /* body prose */
+    --measure-sm: 44ch;  /* intro / taglines */
+    --measure-xs: 28ch;  /* tight hero sub-labels */
+
+    /* ── SPACING — FLUID SCALE ─────────────────────────────
+       Same range-based formula as type scale.
+       Token   min  max    @320  @768  @1440
+       2xs       4    6      4    4.9     6
+       xs        8   10      8    8.9    10
+       sm       12   15     12   13.3    15
+       md       16   20     16   17.8    20
+       lg       24   32     24   26.7    32
+       xl       32   44     32   35.5    44
+       2xl      48   64     48   53.3    64
+       3xl      64   88     64   71.1    88
+    ────────────────────────────────────────────────────── */
+    --s-2xs: clamp(0.25rem,  0.214rem + 0.179vw, 0.375rem);
+    --s-xs:  clamp(0.5rem,   0.429rem + 0.357vw, 0.625rem);
+    --s-sm:  clamp(0.75rem,  0.643rem + 0.536vw, 0.9375rem);
+    --s-md:  clamp(1rem,     0.857rem + 0.714vw, 1.25rem);
+    --s-lg:  clamp(1.5rem,   1.214rem + 1.429vw, 2rem);
+    --s-xl:  clamp(2rem,     1.571rem + 2.143vw, 2.75rem);
+    --s-2xl: clamp(3rem,     2.357rem + 3.214vw, 4rem);
+    --s-3xl: clamp(4rem,     3.143rem + 4.286vw, 5.5rem);
+
+    /* Section rhythm — updated at breakpoints below */
+    --section-py: var(--s-2xl);
+    --section-px: var(--s-md);
+
+    /* ── LAYOUT — CONTAINERS ───────────────────────────────
+       Named to HCWL breakpoints, used via min() in components. */
+    --c-480:  30rem;
+    --c-640:  40rem;
+    --c-768:  48rem;
+    --c-1024: 64rem;
+    --c-1280: 80rem;
+    --c-1440: 90rem;
+
+    /* Semantic aliases */
+    --c-narrow:  var(--c-640);
+    --c-prose:   var(--c-768);
+    --c-content: var(--c-1024);
+    --c-wide:    var(--c-1280);
+    --c-max:     var(--c-1440);
+
+    /* ── EFFECTS ────────────────────────────────────────────*/
+    --radius-none: 0;
+    --radius-sm:   2px;
+    --radius-md:   4px;
+    --radius-lg:   8px;
+    --radius-pill: 9999px;
+
+    /* ── EASING ─────────────────────────────────────────────*/
+    --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    /* ── DURATION ───────────────────────────────────────────*/
+    --dur-fast: 150ms;
+    --dur-base: 250ms;
+    --dur-slow: 500ms;
+
+    /* ── Z-INDEX SCALE ──────────────────────────────────────*/
+    --z-below:   -1;
+    --z-base:     0;
+    --z-raised:   1;
+    --z-sticky:   100;
+    --z-nav:      200;   /* site-header bar */
+    --z-nav-overlay: 201; /* mobile nav overlay — above header */
+    --z-nav-lock: 202;   /* logo + toggle — above overlay */
+    --z-modal:    300;
+    --z-toast:    400;
+    --z-skip:     999;
+
+    /* ── COMPONENT TOKENS ───────────────────────────────────
+       Semantic tokens for specific components.
+       Centralises magic numbers in one place. */
+
+    /* Header */
+    --header-height: 4.5rem;
+    --header-bg-scrolled: rgba(253, 250, 246, 0.94);
+    --header-blur: 20px;
+    /* Header inline padding — own scale, tighter than --section-px */
+    --header-px: var(--s-md);        /* 320: ~16-20px */
+
+    /* Hero */
+    --hero-overlay-top:    rgba(44, 31, 26, 0.60);
+    --hero-overlay-mid:    rgba(44, 31, 26, 0.32);
+    --hero-overlay-bottom: rgba(44, 31, 26, 0.70);
+
+  } /* end :root */
+
+  /* ── BREAKPOINT TOKEN OVERRIDES ─────────────────────────────────
+     Only tokens that change at a given stop are listed.
+     Components use these tokens and inherit the correct value
+     at every breakpoint without needing their own @media blocks
+     for spacing/rhythm changes. */
+
+  /* xs — 480px / 30rem */
+  @media (min-width: 30rem) {
+    :root {
+      --section-px: var(--s-lg);
+      --header-px:  var(--s-lg);      /* 480: ~24px */
+    }
+  }
+
+  /* sm — 640px / 40rem */
+  @media (min-width: 40rem) {
+    :root {
+      --section-px: var(--s-xl);
+      --header-px:  var(--s-lg);      /* 640: still comfortable */
+    }
+  }
+
+  /* md — 768px / 48rem — layout switch point */
+  @media (min-width: 48rem) {
+    :root {
+      --section-px:    var(--s-2xl);
+      --section-py:    var(--s-3xl);
+      --header-height: 5rem;
+      --header-px:     var(--s-xl);   /* 768: ~32-44px */
+    }
+  }
+
+  /* lg — 1024px / 64rem */
+  @media (min-width: 64rem) {
+    :root {
+      --section-px: var(--s-3xl);
+      --header-px:  var(--s-2xl);     /* 1024: ~48-64px */
+    }
+  }
+
+  /* xl — 1280px / 80rem: fluid scale handles it, tokens stable */
+  /* 2xl — 1440px / 90rem: fluid scale hits max, containers cap */
+
+  /* High contrast adjustments */
+  @media (prefers-contrast: high) {
+    :root {
+      --color-rule: rgba(44, 31, 26, 0.45);
+      --color-rule-inv: rgba(253, 250, 246, 0.45);
+    }
+  }
+
+} /* end @layer tokens */
+
+
+/* ══════════════════════════════════════════════════════════════════
+   LAYER: BASE
+   Opinionated element defaults that depend on design tokens.
+   No class selectors. Element and pseudo-element selectors only.
+   Cascade order: above reset, below layout/components.
+══════════════════════════════════════════════════════════════════ */
+@layer base {
+
+  html {
+    scroll-padding-top: var(--header-height);
+  }
+
+  body {
+    font-family: var(--font-body);
+    font-size: var(--ft-base);
+    line-height: var(--lh-body);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    display: flex;
+    flex-direction: column;
+  }
+
+  main { flex: 1; }
+
+  /* Headings — display face, tokens, no opinionated size */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: var(--lh-heading);
+    letter-spacing: var(--ls-tight);
+    color: var(--color-text);
+  }
+
+  h5, h6 {
+    font-family: var(--font-body);
+    font-weight: 500;
+    line-height: var(--lh-ui);
+    letter-spacing: var(--ls-wide);
+    text-transform: uppercase;
+    color: var(--color-text);
+  }
+
+  /* h1 gets display-level line-height */
+  h1 { line-height: var(--lh-display); }
+
+  p {
+    font-size: var(--ft-base);
+    line-height: var(--lh-body);
+    max-width: var(--measure);
+  }
+
+  /* Prose links — only in article/prose context */
+  article a:not([class]),
+  .prose  a:not([class]) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  article a:not([class]):hover,
+  .prose  a:not([class]):hover {
+    color: var(--color-text);
+  }
+
+  /* Mark — highlight with brand colour */
+  mark {
+    background-color: var(--color-accent);
+    color: var(--color-text-inv);
+    padding-inline: 0.2em;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Focus ring — consistent, brand-coloured */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-sm);
+  }
+
+  :focus:not(:focus-visible) { outline: none; }
+
+  /* Selection — brand colour */
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-text-inv);
+  }
+
+} /* end @layer base */
+
+
+/* ══════════════════════════════════════════════════════════════════
+   LAYER: LAYOUT
+   Page-structure primitives. Skip link, site-header, primary-nav,
+   main wrapper, section rhythm, rule divider, footer.
+   These are structural — they define where things sit, not
+   what they look like. Component layers style what's inside them.
+══════════════════════════════════════════════════════════════════ */
+@layer layout {
+
+  /* ── Skip link (WCAG 2.4.1) ──────────────────────────────*/
+  .skip-link {
+    position: absolute;
+    inset-block-start: var(--s-sm);
+    inset-inline-start: var(--s-sm);
+    z-index: var(--z-skip);
+    padding: var(--s-xs) var(--s-md);
+    background: var(--color-bg-dark);
+    color: var(--color-text-inv);
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 500;
+    letter-spacing: var(--ls-wide);
+    line-height: var(--lh-ui);
+    border-radius: var(--radius-sm);
+    translate: 0 -200%;
+    transition: translate var(--dur-fast) var(--ease-out);
+  }
+
+  .skip-link:focus-visible {
+    translate: 0 0;
+    outline: 2px solid var(--color-text-inv);
+    outline-offset: 3px;
+  }
+
+  /* ════════════════════════════════════════════════════════
+     SITE HEADER + NAVIGATION
+     Mobile-first. 7-stop breakpoint coverage.
+     Base 320 → xs 480 → sm 640 → md 768 → lg 1024 → xl 1280 → 2xl 1440
+  ════════════════════════════════════════════════════════ */
+
+  /* ── Site header shell ────────────────────────────────── */
+  .site-header {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: var(--z-nav);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-lg);               /* keeps logo away from right-side controls */
+    padding-block: var(--s-sm);
+    padding-inline: var(--s-md);    /* 320: tight but not cramped */
+    isolation: isolate;
+    transition:
+      padding-block    350ms var(--ease-out),
+      background-color 350ms var(--ease-out),
+      backdrop-filter  350ms var(--ease-out),
+      box-shadow       350ms var(--ease-out);
+  }
+
+  .site-header.is-scrolled {
+    padding-block: var(--s-xs);
+    background-color: var(--header-bg-scrolled);
+    backdrop-filter: blur(var(--header-blur));
+    -webkit-backdrop-filter: blur(var(--header-blur));
+    box-shadow: 0 1px 0 var(--color-rule);
+  }
+
+  /* ── Logo ────────────────────────────────────────────── */
+  .site-logo {
+    font-family: var(--font-display);
+    font-size: var(--ft-lg);
+    font-weight: 400;
+    letter-spacing: var(--ls-wide);
+    line-height: 1;
+    color: var(--color-text-inv);
+    flex-shrink: 0;
+    white-space: nowrap;
+    position: relative;
+    z-index: var(--z-nav-lock);
+    text-decoration: none;
+    transition:
+      color    350ms var(--ease-out),
+      opacity  var(--dur-fast) var(--ease-out);
+  }
+
+  .site-logo span { font-style: italic; }
+  .site-logo:hover { opacity: 0.8; }
+  .site-header.is-scrolled .site-logo { color: var(--color-text); }
+
+  /* ── Mobile hamburger toggle ────────────────────────── */
+  .nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Minimum 44×44px tap target — WCAG 2.5.5 */
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    font-size: var(--ft-md);
+    color: var(--color-text-inv);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    z-index: var(--z-nav-lock);
+    touch-action: manipulation;
+    transition: color 350ms var(--ease-out);
+    /* Margin-inline-start: auto pushes it to the far right */
+    margin-inline-start: auto;
+  }
+
+  .site-header.is-scrolled .nav-toggle { color: var(--color-text); }
+
+  /* ── Mobile nav overlay ────────────────────────────────
+     Fixed, full-viewport, body-level (outside <header>).
+     Four-layer hidden state to be bulletproof:
+       opacity       — visual
+       visibility    — removes from AT + tab order
+       pointer-events — no ghost clicks
+       translate     — slide from top
+  ──────────────────────────────────────────────────────── */
+  .primary-nav {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-nav-overlay);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-md);        /* tight — links control their own spacing */
+
+    /* Explicit dimensions — belt AND suspenders against overflow */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    /* iOS notch / home indicator safe areas */
+    padding-block-start: max(env(safe-area-inset-top),    var(--s-2xl));
+    padding-block-end:   max(env(safe-area-inset-bottom), var(--s-2xl));
+    padding-inline:      max(env(safe-area-inset-left),
+                             env(safe-area-inset-right),  var(--s-xl));
+
+    background-color: var(--color-bg-dark);
+    min-block-size: 100dvh;
+    /* Clip horizontal, allow vertical scroll if content overflows */
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    /* Prevent rubber-band horizontal scroll on iOS */
+    touch-action: pan-y;
+
+    /* Hidden state */
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    translate: 0 -1.5rem;
+
+    transition:
+      opacity    250ms var(--ease-out),
+      visibility 250ms var(--ease-out),
+      translate  250ms var(--ease-out);
+  }
+
+  /* Open state */
+  .primary-nav.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    translate: 0 0;
+  }
+
+  /* Scroll lock — applied to BOTH html and body for iOS Safari */
+  html.nav-open,
+  body.nav-open {
+    overflow: hidden;
+    /* Compensate for scrollbar disappearing on desktop */
+    padding-inline-end: var(--scrollbar-width, 0px);
+  }
+
+  /* ── In-overlay brand lockup ─────────────────────────── */
+  .nav-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-xs);
+    text-align: center;
+  }
+
+  .nav-brand__logo {
+    font-family: var(--font-display);
+    font-size: var(--ft-xl);
+    font-weight: 500;
+    letter-spacing: var(--ls-wide);
+    line-height: 1;
+    color: var(--color-text-inv);
+  }
+
+  .nav-brand__logo em { font-style: italic; }
+
+  .nav-brand__sub {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 400;
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.4);
+    max-width: none;
+  }
+
+  /* Hairline rules */
+  .nav-brand__rule,
+  .nav-cta__rule {
+    width: min(20rem, 80%);
+    height: 1px;
+    background-color: var(--color-rule-inv);
+    border: none;
+    opacity: 0.35;
+  }
+
+  /* ── Nav link list ───────────────────────────────────── */
+  .nav-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-md);        /* 320: ~16-20px — tight, editorial */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* ── Desktop nav — hidden at base ───────────────────── */
+  .nav-desktop { display: none; }
+
+  /* ══ BREAKPOINTS ════════════════════════════════════════ */
+
+  /* ━━ 480px / 30rem ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     Mobile overlay only. More room on larger phones. */
+  @media (min-width: 30rem) {
+    .site-header {
+      padding-inline: var(--s-lg);
+    }
+
+    .nav-list {
+      gap: var(--s-lg);      /* 480: ~24-32px */
+    }
+
+    .nav-brand__logo {
+      font-size: var(--ft-2xl);
+    }
+  }
+
+  /* ━━ 640px / 40rem ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     Mobile overlay. More internal space. */
+  @media (min-width: 40rem) {
+    .site-header {
+      padding-inline: var(--s-xl);
+    }
+
+    .nav-list {
+      gap: var(--s-lg);      /* 640: same comfortable gap, no balloon */
+    }
+  }
+
+  /* ━━ 768px / 48rem — DESKTOP NAV REVEALED ━━━━━━━━━━━━━
+     Mobile toggle and overlay hidden.
+     Desktop nav becomes visible. */
+  @media (min-width: 48rem) {
+    .nav-toggle  { display: none; }
+    .primary-nav { display: none; }
+
+    .site-header {
+      padding-inline: var(--s-xl);
+      gap: var(--s-xl);
+    }
+
+    .nav-desktop {
+      display: flex;
+      align-items: center;
+      gap: var(--s-md);
+      /* margin-inline-start: auto pushes desktop nav to far right */
+      margin-inline-start: auto;
+    }
+
+    .nav-desktop__links {
+      gap: var(--s-md);
+    }
+  }
+
+  /* ━━ 1024px / 64rem ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     More space for nav links and CTA. */
+  @media (min-width: 64rem) {
+    .site-header {
+      padding-inline: var(--s-2xl);
+      gap: var(--s-2xl);
+    }
+
+    .nav-desktop {
+      gap: var(--s-lg);
+    }
+
+    .nav-desktop__links {
+      gap: var(--s-lg);
+    }
+
+    .nav-desktop__cta {
+      padding-inline: var(--s-lg);
+    }
+  }
+
+  /* ━━ 1280px / 80rem ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     Logo steps up, links breathe fully. */
+  @media (min-width: 80rem) {
+    .site-logo {
+      font-size: var(--ft-xl);
+    }
+
+    .site-header {
+      padding-inline: var(--s-3xl);
+    }
+
+    .nav-desktop {
+      gap: var(--s-xl);
+    }
+
+    .nav-desktop__links {
+      gap: var(--s-xl);
+    }
+  }
+
+  /* ━━ 1440px / 90rem ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     Nav link size steps up for readability at max width. */
+  @media (min-width: 90rem) {
+    .nav-desktop__link {
+      font-size: var(--ft-base);
+    }
+
+    .nav-desktop__cta {
+      padding-inline: var(--s-xl);
+    }
+  }
+
+  /* ── Section rhythm wrapper ──────────────────────────────*/
+  .section {
+    padding-block: var(--section-py);
+    padding-inline: var(--section-px);
+  }
+
+  /* Section surface variants */
+  .section--default { background-color: var(--color-bg); }
+  .section--alt     { background-color: var(--color-bg-alt); }
+  .section--dark    {
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-inv);
+  }
+
+  /* Constrained content wrapper */
+  .container {
+    width: min(var(--c-wide), 100%);
+    margin-inline: auto;
+  }
+
+  .container--narrow  { width: min(var(--c-narrow),  100%); margin-inline: auto; }
+  .container--prose   { width: min(var(--c-prose),   100%); margin-inline: auto; }
+  .container--content { width: min(var(--c-content), 100%); margin-inline: auto; }
+  .container--wide    { width: min(var(--c-wide),    100%); margin-inline: auto; }
+  .container--max     { width: min(var(--c-max),     100%); margin-inline: auto; }
+
+  /* Hairline divider */
+  .rule {
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-rule);
+    border: none;
+  }
+
+  /* ── Site footer — structural only ──────────────────────*/
+  .site-footer {
+    background-color: var(--color-bg-dark);
+    color: var(--color-text-inv);
+  }
+
+} /* end @layer layout */
+
+
+/* ══════════════════════════════════════════════════════════════════
+   LAYER: COMPONENTS
+   Self-contained UI blocks. Each component owns its own
+   cascade — styles here win over base and layout.
+   Components contain their own @media breakpoints.
+══════════════════════════════════════════════════════════════════ */
+@layer components {
+
+  /* ── NAV LINKS (MOBILE OVERLAY) ─────────────────────────*/
+
+  .nav-link {
+    font-family: var(--font-display);
+    font-size: var(--ft-2xl);
+    font-weight: 400;
+    letter-spacing: var(--ls-tight);
+    line-height: 1;
+    color: var(--color-text-inv);
+    text-decoration: none;
+    padding-block: var(--s-xs);
+    max-width: 100%;            /* never wider than overlay */
+    text-align: center;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .nav-link:hover { color: var(--color-text-muted); }
+
+  .nav-link:focus-visible {
+    outline: 2px solid rgba(253, 250, 246, 0.6);
+    outline-offset: 8px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Mobile CTA in overlay */
+  .nav-cta-mobile {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-xs);
+    font-family: var(--font-body);
+    font-size: var(--ft-sm);
+    font-weight: 500;
+    letter-spacing: var(--ls-wider);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.6);
+    padding: var(--s-sm) var(--s-2xl);
+    min-block-size: 2.75rem;
+    min-inline-size: 12rem;
+    border: 1px solid rgba(253, 250, 246, 0.2);
+    text-decoration: none;
+    transition:
+      color        var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      background   var(--dur-fast) var(--ease-out);
+  }
+
+  .nav-cta-mobile:hover {
+    color: var(--color-text-inv);
+    border-color: rgba(253, 250, 246, 0.5);
+    background: rgba(253, 250, 246, 0.06);
+  }
+
+  .nav-cta-mobile:focus-visible {
+    outline: 2px solid var(--color-text-inv);
+    outline-offset: 3px;
+  }
+
+  /* ── DESKTOP NAV LINKS ───────────────────────────────── */
+
+  .nav-desktop__links {
+    display: flex;
+    align-items: center;
+    gap: var(--s-lg);           /* base gap — overridden at breakpoints */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .nav-desktop__link {
+    font-family: var(--font-body);
+    font-size: var(--ft-sm);
+    font-weight: 500;
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    white-space: nowrap;
+    color: rgba(253, 250, 246, 0.8);
+    text-decoration: none;
+    padding-block: var(--s-xs);  /* larger click area */
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .site-header.is-scrolled .nav-desktop__link {
+    color: rgba(44, 31, 26, 0.65);
+  }
+
+  .nav-desktop__link:hover { color: var(--color-text-inv); }
+  .site-header.is-scrolled .nav-desktop__link:hover { color: var(--color-text); }
+
+  .nav-desktop__link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* Desktop CTA button */
+  .nav-desktop__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-xs);
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 600;
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    white-space: nowrap;
+    flex-shrink: 0;
+    color: var(--color-text);
+    background-color: var(--color-text-inv);
+    padding: var(--s-xs) var(--s-md);
+    min-block-size: 2.25rem;
+    text-decoration: none;
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      color            var(--dur-fast) var(--ease-out);
+  }
+
+  .site-header.is-scrolled .nav-desktop__cta {
+    background-color: var(--color-text);
+    color: var(--color-text-inv);
+  }
+
+  .nav-desktop__cta:hover {
+    background-color: var(--color-accent);
+    color: var(--color-text-inv);
+  }
+
+  .nav-desktop__cta:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+  }
+
+  /* ── HERO ────────────────────────────────────────────────*/
+  .hero {
+    position: relative;
+    min-height: 100dvh;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-block-start: var(--header-height);
+    padding-block-end: var(--s-2xl);
+    padding-inline: var(--section-px);
+    color: var(--color-text-inv);
+    overflow: clip;
+    isolation: isolate; /* scopes z-index on pseudo-elements */
+  }
+
+  /* Background image — below overlay */
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    background-image: url('assets/img/pexels-israelzin-3724431.webp');
+    background-size: cover;
+    background-position: right center;
+    will-change: transform; /* promoted layer for parallax */
+  }
+
+  /* Gradient overlay — above image, below content */
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      to bottom,
+      var(--hero-overlay-top)    0%,
+      var(--hero-overlay-mid)   50%,
+      var(--hero-overlay-bottom) 100%
+    );
+  }
+
+  .hero__content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-md);
+    width: min(44rem, 100%);
+  }
+
+  .hero__eyebrow {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 500;
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.6);
+    display: flex;
+    align-items: center;
+    gap: var(--s-md);
+  }
+
+  /* Decorative line rules flanking eyebrow text */
+  .hero__eyebrow::before,
+  .hero__eyebrow::after {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background-color: rgba(253, 250, 246, 0.3);
+    flex-shrink: 0;
+  }
+
+  .hero__title {
+    font-family: var(--font-display);
+    font-size: var(--ft-hero);
+    font-weight: 500;
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-tight);
+    color: var(--color-text-inv);
+  }
+
+  .hero__title em {
+    font-style: italic;
+    color: var(--color-text-muted);
+    display: block;
+  }
+
+  .hero__sub {
+    font-family: var(--font-body);
+    font-size: var(--ft-sm);
+    font-weight: 300;
+    letter-spacing: var(--ls-wider);
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.65);
+    text-transform: uppercase;
+    max-width: var(--measure-sm);
+  }
+
+  .hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-sm);
+    font-family: var(--font-body);
+    font-size: var(--ft-sm);
+    font-weight: 500;
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: var(--color-text-inv);
+    padding: var(--s-sm) var(--s-xl);
+    border: 1px solid rgba(253, 250, 246, 0.4);
+    margin-block-start: var(--s-sm);
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      border-color     var(--dur-base) var(--ease-out);
+  }
+
+  .hero__cta:hover {
+    background-color: rgba(253, 250, 246, 0.1);
+    border-color: rgba(253, 250, 246, 0.7);
+  }
+
+  /* Scroll cue */
+  .hero__scroll {
+    position: absolute;
+    inset-block-end: var(--s-lg);
+    inset-inline-start: 50%;
+    translate: -50% 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-2xs);
+    font-family: var(--font-body);
+    font-size: var(--ft-2xs);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.4);
+  }
+
+  /* ── ABOUT ───────────────────────────────────────────────*/
+  .about__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-2xl);
+    align-items: center;
+  }
+
+  .about__img {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: center top;
+    filter: sepia(8%) contrast(1.04);
+  }
+
+  .about__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-lg);
+  }
+
+  .about__title {
+    font-family: var(--font-display);
+    font-size: var(--ft-3xl);
+    font-weight: 400;
+    line-height: var(--lh-heading);
+    letter-spacing: var(--ls-tight);
+    color: var(--color-text);
+  }
+
+  .about__title em { font-style: italic; color: var(--color-accent); }
+
+  .about__text {
+    font-family: var(--font-body);
+    font-size: var(--ft-base);
+    font-weight: 300;
+    line-height: var(--lh-loose);
+    color: rgba(44, 31, 26, 0.72);
+    max-width: var(--measure-sm);
+  }
+
+  .about__sig {
+    font-family: var(--font-display);
+    font-size: var(--ft-xl);
+    font-style: italic;
+    font-weight: 300;
+    line-height: var(--lh-snug);
+    color: var(--color-accent);
+    padding-block-start: var(--s-md);
+    border-block-start: 1px solid var(--color-rule);
+  }
+
+  @media (min-width: 48rem) {
+    .about__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--s-2xl);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .about__grid { gap: var(--s-3xl); }
+  }
+
+  /* ── SECTION HEADER (eyebrow + title pattern) ────────────*/
+  .section-label {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 500;
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: var(--color-accent);
+    margin-block-end: var(--s-md);
+  }
+
+  /* ── SERVICES ────────────────────────────────────────────*/
+  .services__inner {
+    width: min(var(--c-wide), 100%);
+    margin-inline: auto;
+  }
+
+  .services__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-xs);
+    margin-block-end: var(--s-2xl);
+    padding-block-end: var(--s-lg);
+    border-block-end: 1px solid var(--color-rule);
+  }
+
+  .services__title {
+    font-family: var(--font-display);
+    font-size: var(--ft-3xl);
+    font-weight: 400;
+    letter-spacing: var(--ls-tight);
+    line-height: var(--lh-display);
+    color: var(--color-text);
+  }
+
+  .services__title em { font-style: italic; color: var(--color-accent); }
+
+  .services__note {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 300;
+    letter-spacing: var(--ls-wide);
+    line-height: var(--lh-ui);
+    color: var(--color-text-muted);
+  }
+
+  /* Mobile: stacked columns */
+  .services__cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-2xl);
+  }
+
+  .service-group__title {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 500;
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: var(--color-accent);
+    margin-block-end: var(--s-lg);
+    padding-block-end: var(--s-sm);
+    border-block-end: 1px solid var(--color-rule);
+  }
+
+  /* Service row — printed menu dot-leader pattern */
+  .service-item {
+    display: flex;
+    align-items: baseline;
+    padding-block: var(--s-sm);
+    border-block-end: 1px solid rgba(44, 31, 26, 0.14);
+  }
+
+  .service-item:last-child { border-block-end: none; }
+
+  .service-item__left {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+
+  .service-item__name {
+    font-family: var(--font-display);
+    font-size: var(--ft-lg);
+    font-weight: 400;
+    line-height: var(--lh-snug);
+    color: var(--color-text);
+  }
+
+  .service-item__desc {
+    font-family: var(--font-body);
+    font-size: var(--ft-sm);
+    font-weight: 400;
+    letter-spacing: var(--ls-normal);
+    line-height: var(--lh-ui);
+    color: rgba(44, 31, 26, 0.65);
+    display: block;
+    margin-block-start: var(--s-2xs);
+    max-width: none;
+  }
+
+  /* Dot leader connecting name to price */
+  .service-item__leader {
+    flex: 1;
+    height: 1px;
+    border-block-end: 1px dotted rgba(44, 31, 26, 0.28);
+    margin-inline: var(--s-sm);
+    translate: 0 -0.35em; /* optical baseline alignment */
+    min-width: var(--s-lg);
+  }
+
+  .service-item__price {
+    font-family: var(--font-display);
+    font-size: var(--ft-lg);
+    font-style: italic;
+    font-weight: 400;
+    line-height: var(--lh-snug);
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  /* sm+ — header row becomes inline */
+  @media (min-width: 40rem) {
+    .services__header {
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+  }
+
+  /* md+ — two columns side by side */
+  @media (min-width: 48rem) {
+    .services__cols {
+      grid-template-columns: 1fr 1fr;
+      gap: 0 var(--s-3xl);
+    }
+  }
+
+  /* ── GALLERY ─────────────────────────────────────────────*/
+  /* Mobile base: 2-col grid, featured item full-width */
+  .gallery__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    gap: 3px; /* hairline pixel gap — intentional, not a space token */
+  }
+
+  .gallery__item {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+    /* Establish a block formatting context so figure fills it */
+    display: block;
+  }
+
+  /* Featured item: wider on mobile */
+  .gallery__item--featured {
+    grid-column: span 2;
+    aspect-ratio: 16 / 9;
+  }
+
+  /* figure must fill the li — it's the intermediary between li and img */
+  .gallery__item figure {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .gallery__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition:
+      scale  var(--dur-slow) var(--ease-out),
+      filter var(--dur-slow) var(--ease-out);
+    filter: sepia(8%) contrast(1.02);
+  }
+
+  .gallery__item:hover .gallery__img {
+    scale: 1.04;
+    filter: sepia(0%) contrast(1.05);
+  }
+
+  /* Caption — reveals on hover */
+  .gallery__caption {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    padding-block: var(--s-sm) var(--s-md);
+    padding-inline: var(--s-md);
+    background: linear-gradient(
+      to top,
+      rgba(44, 31, 26, 0.65) 0%,
+      transparent 100%
+    );
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.85);
+    text-wrap: balance;
+    max-width: none;
+    opacity: 0;
+    transition: opacity var(--dur-base) var(--ease-out);
+  }
+
+  .gallery__item:hover .gallery__caption { opacity: 1; }
+
+  /* lg+ — 4-col editorial masonry */
+  @media (min-width: 64rem) {
+    .gallery__grid {
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(2, 22vw);
+    }
+
+    .gallery__item {
+      aspect-ratio: unset;
+    }
+
+    .gallery__item figure {
+      position: absolute;  /* fill the explicit grid row height */
+      inset: 0;
+    }
+
+    .gallery__item--featured {
+      grid-column: span 2;
+      grid-row: span 2;
+      aspect-ratio: unset;
+    }
+  }
+
+  /* ── CONTACT ─────────────────────────────────────────────*/
+  .contact__inner {
+    width: min(var(--c-wide), 100%);
+    margin-inline: auto;
+  }
+
+  .contact__heading {
+    font-family: var(--font-display);
+    font-size: var(--ft-3xl);
+    font-weight: 400;
+    letter-spacing: var(--ls-tight);
+    line-height: var(--lh-display);
+    color: var(--color-text);
+    margin-block-end: var(--s-2xl);
+  }
+
+  .contact__heading em { font-style: italic; color: var(--color-accent); }
+
+  /* Mobile: stacked cards */
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-xl);
+    border-block-start: 1px solid var(--color-rule);
+    padding-block-start: var(--s-xl);
+  }
+
+  .contact__card-label {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 500;
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: var(--color-accent);
+    margin-block-end: var(--s-md);
+  }
+
+  .contact__card-content {
+    font-family: var(--font-display);
+    font-size: var(--ft-lg);
+    font-weight: 400;
+    line-height: var(--lh-loose);
+    color: var(--color-text);
+  }
+
+  .contact__card-content a {
+    color: var(--color-text);
+    border-block-end: 1px solid var(--color-rule);
+    display: block; /* stack phone and email vertically */
+    transition:
+      color        var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out);
+  }
+
+  .contact__card-content a:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /* Hours list */
+  .hours { display: flex; flex-direction: column; }
+
+  .hours__row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    padding-block: var(--s-sm);
+    border-block-end: 1px solid var(--color-rule);
+    font-family: var(--font-display);
+    font-size: var(--ft-lg);
+    font-weight: 400;
+    line-height: var(--lh-ui);
+    color: var(--color-text);
+  }
+
+  .hours__row:first-child { padding-block-start: 0; }
+  .hours__row:last-child  { border-block-end: none; padding-block-end: 0; }
+  .hours__day { color: rgba(44, 31, 26, 0.65); }
+
+  /* md+ — 3-column with vertical dividers */
+  @media (min-width: 48rem) {
+    .contact__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      padding-block-start: 0;
+    }
+
+    .contact__card {
+      padding-block: var(--s-xl);
+      padding-inline-end: var(--s-xl);
+      border-inline-end: 1px solid var(--color-rule);
+    }
+
+    .contact__card:nth-child(2) { padding-inline: var(--s-xl); }
+
+    .contact__card:last-child {
+      border-inline-end: none;
+      padding-inline-start: var(--s-xl);
+      padding-inline-end: 0;
+    }
+  }
+
+  /* ── FOOTER CONTENT ──────────────────────────────────────*/
+  /* ════════════════════════════════════════════════════════
+     FOOTER COMPONENT
+     Three zones:
+     1. footer__statement  — full-width display brand line
+     2. footer__body       — 4-col grid: brand, nav, services, contact
+     3. footer__bottom     — copyright + credit strip
+  ════════════════════════════════════════════════════════ */
+
+  /* ── Zone 1: Brand statement ─────────────────────────── */
+  .footer__statement {
+    padding-block: var(--s-2xl);
+    padding-inline: var(--section-px);
+    border-block-end: 1px solid var(--color-rule-inv);
+    text-align: center;
+  }
+
+  .footer__statement-text {
+    font-family: var(--font-display);
+    font-size: var(--ft-3xl);
+    font-weight: 400;
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-tight);
+    color: rgba(253, 250, 246, 0.85);
+    max-width: none;
+  }
+
+  .footer__statement-text em {
+    font-style: italic;
+    color: var(--color-accent);
+  }
+
+  /* ── Zone 2: Main footer body ───────────────────────────
+     BREAKPOINT STRATEGY — no grid-area names (avoids cascade bugs)
+     base (320):  1 column, everything stacks
+     sm   (640):  2×2 grid: brand/contact top, nav/services bottom
+     md   (768):  brand row + 3-col sub-grid below (via cols-grid wrapper)
+     lg  (1024):  single 4-col row, cols-grid becomes transparent wrapper
+  ──────────────────────────────────────────────────────── */
+
+  /* ══ FOOTER BODY GRID — mobile-first, 4-stop layout ════════
+     DOM order: brand | cols-grid[nav, services] | contact
+     320:  flex column — brand, nav, services, contact stacked
+     480:  cols-grid becomes 2-col so nav+services sit side-by-side
+     640:  2-col grid — brand full-width, [nav+services | contact]
+     768:  2-row grid — brand full-width, [cols-grid(2-col) | contact]
+     1024: 4-col row — brand | nav | services | contact
+  ══════════════════════════════════════════════════════════ */
+
+  /* ── 320px base: single flex column ─────────────────── */
+  .footer__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-xl);
+    padding-block-start: var(--s-lg);
+    padding-block-end:   var(--s-xl);
+    padding-inline:      var(--section-px);
+    border-block-end: 1px solid var(--color-rule-inv);
+  }
+
+  /* cols-grid transparent at base — nav+services stack naturally */
+  .footer__cols-grid { display: contents; }
+
+  /* ── 480px / 30rem: nav+services side-by-side ────────── */
+  @media (min-width: 30rem) {
+    .footer__cols-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-xl);
+      align-items: start;
+    }
+  }
+
+  /* ── 640px / 40rem: 2-col — brand top, nav+contact bottom */
+  @media (min-width: 40rem) {
+    .footer__body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: var(--s-xl);
+      align-items: start;
+    }
+
+    /* Brand: full-width row 1 */
+    .footer__col--brand {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      padding-block-end: var(--s-lg);
+      border-block-end: 1px solid var(--color-rule-inv);
+    }
+
+    /* cols-grid: col 1 row 2 — 2-col sub-grid */
+    .footer__cols-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--s-lg);
+      align-items: start;
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    /* contact: col 2 row 2 */
+    .footer__col--contact {
+      grid-column: 2;
+      grid-row: 2;
+    }
+  }
+
+  /* ── 768px / 48rem: brand full-width + 2-col+contact below */
+  @media (min-width: 48rem) {
+    .footer__body {
+      grid-template-columns: 2fr 1.5fr;
+      grid-template-rows: auto auto;
+      gap: var(--s-xl);
+    }
+
+    /* Brand: full-width horizontal flex row 1 */
+    .footer__col--brand {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--s-xl);
+      padding-block-end: var(--s-lg);
+      padding-block-start: 0;
+      border-block-end: 1px solid var(--color-rule-inv);
+    }
+
+    .footer__social { margin-block-start: 0; flex-shrink: 0; }
+
+    /* cols-grid: col 1 row 2 */
+    .footer__cols-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0 var(--s-lg);
+      align-items: start;
+      grid-column: 1;
+      grid-row: 2;
+      padding-block-start: var(--s-lg);
+    }
+
+    /* contact: col 2 row 2 */
+    .footer__col--contact {
+      grid-column: 2;
+      grid-row: 2;
+      padding-block-start: var(--s-lg);
+    }
+
+    /* Reset nav col flex from earlier */
+    .footer__col--nav,
+    .footer__col--services { flex: unset; }
+  }
+
+  /* ── lg — 1024px: true 4-column row ─────────────────────
+     footer__body: 4-col grid.
+     MUST reset grid-template-rows and all explicit placements
+     that cascaded from 40rem and 48rem blocks. */
+  @media (min-width: 64rem) {
+    .footer__body {
+      grid-template-columns: 1.4fr 1fr 1fr 1.4fr;
+      grid-template-rows: auto;   /* reset 2-row from 48rem */
+      gap: 0;
+      align-items: start;
+    }
+
+    /* Brand: col 1, vertical stack — reset row/col from earlier */
+    .footer__col--brand {
+      grid-column: 1;
+      grid-row: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--s-md);
+      padding-block: 0;
+      border-block-end: none;
+    }
+
+    .footer__social {
+      margin-block-start: var(--s-xs);
+    }
+
+    /* cols-grid dissolves — nav + services become cols 2 & 3 */
+    .footer__cols-grid {
+      display: contents;
+    }
+
+    /* Reset explicit placements from sm/md blocks */
+    .footer__col--nav,
+    .footer__col--services,
+    .footer__col--contact {
+      grid-column: auto;
+      grid-row: auto;
+      padding-block-start: 0;
+      flex: unset;
+    }
+
+    /* Left border dividers on inner cols */
+    .footer__col--nav,
+    .footer__col--services,
+    .footer__col--contact {
+      padding-inline-start: var(--s-xl);
+      border-inline-start: 1px solid var(--color-rule-inv);
+    }
+  }
+
+  /* ── Footer columns — shared ─────────────────────────── */
+  .footer__col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-md);
+  }
+
+  /* Column heading (h3) — small-caps eyebrow label */
+  .footer__col-heading {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 500;
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.4);
+    padding-block-end: var(--s-sm);
+    border-block-end: 1px solid var(--color-rule-inv);
+    margin-block-end: var(--s-xs);
+  }
+
+  /* ── Col 1: Logo + tagline + social ─────────────────── */
+  .footer__logo {
+    font-family: var(--font-display);
+    font-size: var(--ft-xl);
+    font-weight: 500;
+    letter-spacing: var(--ls-wide);
+    line-height: var(--lh-display);
+    color: rgba(253, 250, 246, 0.9);
+    transition: opacity var(--dur-fast) var(--ease-out);
+  }
+
+  .footer__logo span { font-style: italic; }
+  .footer__logo:hover { opacity: 0.7; }
+
+  .footer__tagline {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 400;
+    letter-spacing: var(--ls-wider);
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.35);
+    text-transform: uppercase;
+    max-width: none;
+  }
+
+  /* Short italic brand quote beneath tagline */
+  .footer__quote {
+    font-family: var(--font-display);
+    font-size: var(--ft-lg);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.4;
+    color: rgba(253, 250, 246, 0.55);
+    max-width: 26ch;
+    /* No border — sits directly under the wordmark */
+  }
+
+  /* Soft CTA link — "Book an appointment" */
+  .footer__brand-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-xs);
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 500;
+    letter-spacing: var(--ls-wider);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: var(--color-accent);
+    transition: color var(--dur-fast) var(--ease-out),
+                gap   var(--dur-fast) var(--ease-out);
+  }
+
+  .footer__brand-cta:hover {
+    color: var(--color-text-inv);
+    gap: var(--s-sm);
+  }
+
+  /* Social icon row */
+  .footer__social {
+    display: flex;
+    gap: var(--s-xs);
+    list-style: none;
+    padding: 0;
+    margin-block-start: var(--s-xs);
+  }
+
+  .footer__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: var(--ft-sm);
+    color: rgba(253, 250, 246, 0.45);
+    border: 1px solid rgba(253, 250, 246, 0.15);
+    border-radius: var(--radius-pill);
+    transition:
+      color        var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) var(--ease-out),
+      background   var(--dur-fast) var(--ease-out);
+  }
+
+  .footer__social-link:hover {
+    color: var(--color-text-inv);
+    border-color: rgba(253, 250, 246, 0.45);
+    background: rgba(253, 250, 246, 0.08);
+  }
+
+  /* ── Cols 2 & 3: Nav lists ───────────────────────────── */
+  .footer__nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-xs);
+    list-style: none;
+    padding: 0;
+  }
+
+  .footer__nav-link {
+    font-family: var(--font-body);
+    font-size: var(--ft-sm);
+    font-weight: 300;
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.5);
+    padding-block: var(--s-2xs);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .footer__nav-link:hover { color: var(--color-text-inv); }
+
+  /* ── Col 4: Address + hours ──────────────────────────── */
+  .footer__address {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-sm);
+    font-style: normal;
+  }
+
+  .footer__address p { max-width: none; }
+
+  .footer__address-link {
+    font-family: var(--font-body);
+    font-size: var(--ft-sm);
+    font-weight: 300;
+    line-height: var(--lh-body);
+    color: rgba(253, 250, 246, 0.5);
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .footer__address-link:hover { color: var(--color-text-inv); }
+
+  /* Hours summary in footer */
+  .footer__hours {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2xs);
+    padding-block-start: var(--s-md);
+    margin-block-start: var(--s-xs);
+    border-block-start: 1px solid var(--color-rule-inv);
+  }
+
+  .footer__hours-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: var(--s-sm);
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.4);
+  }
+
+  .footer__hours-row dt { color: rgba(253, 250, 246, 0.35); }
+  .footer__hours-row dd { text-align: right; white-space: nowrap; }
+
+  /* ── Zone 3: Bottom bar ──────────────────────────────── */
+  .footer__bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-xs);
+    padding-block: var(--s-md);
+    padding-inline: var(--section-px);
+    text-align: center;
+    border-block-start: 1px solid var(--color-rule-inv);
+  }
+
+  @media (min-width: 48rem) {
+    .footer__bottom {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: start;
+    }
+  }
+
+  .footer__copy {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    letter-spacing: var(--ls-wide);
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.3);
+    max-width: none;
+  }
+
+  .footer__credit {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    letter-spacing: var(--ls-wide);
+    line-height: var(--lh-ui);
+    color: rgba(253, 250, 246, 0.25);
+    max-width: none;
+  }
+
+  .footer__credit-link {
+    color: rgba(253, 250, 246, 0.5);
+    font-weight: 500;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .footer__credit-link:hover { color: var(--color-accent); }
+
+} /* end @layer components */
+
+
+/* ══════════════════════════════════════════════════════════════════
+   LAYER: UTILITIES
+   Single-purpose helpers. Win over components without !important.
+   No nesting, no compound selectors.
+══════════════════════════════════════════════════════════════════ */
+@layer utilities {
+
+  /* Visually hidden — accessible to screen readers */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+
+  /* Remove measure constraint from p */
+  .no-measure { max-width: none; }
+
+  /* Scroll reveal — initial hidden state */
+  .reveal {
+    opacity: 0;
+    translate: 0 1.5rem;
+    transition:
+      opacity   700ms var(--ease-out),
+      translate 700ms var(--ease-out);
+  }
+
+  .reveal.is-visible { opacity: 1; translate: 0 0; }
+
+  /* Staggered reveal delays */
+  .reveal[data-delay="1"] { transition-delay: 100ms; }
+  .reveal[data-delay="2"] { transition-delay: 200ms; }
+  .reveal[data-delay="3"] { transition-delay: 300ms; }
+
+} /* end @layer utilities */
+
+
+/* ══════════════════════════════════════════════════════════════════
+   LAYER: STATES
+   Animations, @keyframes, and preference-media interactions.
+   Highest priority within our own codebase. Wins over everything.
+   Unlayered external CSS (FA) still sits above this in the
+   implicit outer layer — but within our code this is the top.
+══════════════════════════════════════════════════════════════════ */
+@layer states {
+
+  /* ── @keyframes ──────────────────────────────────────────*/
+
+  /* Hero scroll cue bounce */
+  @keyframes bounce-scroll {
+    0%, 100% { translate: -50% 0; }
+    50%       { translate: -50% 8px; }
+  }
+
+  /* Fade + slide up — used for hero content */
+  @keyframes fade-up {
+    from { opacity: 0; translate: 0 1.5rem; }
+    to   { opacity: 1; translate: 0 0; }
+  }
+
+  /* ── Hero scroll cue animation ───────────────────────────*/
+  .hero__scroll {
+    animation: bounce-scroll 2.5s var(--ease-in-out) infinite;
+  }
+
+  /* ── Hero content entrance ───────────────────────────────*/
+  .hero__eyebrow { animation: fade-up 0.7s var(--ease-out) 0.1s both; }
+  .hero__title   { animation: fade-up 0.7s var(--ease-out) 0.3s both; }
+  .hero__sub     { animation: fade-up 0.7s var(--ease-out) 0.5s both; }
+  .hero__cta     { animation: fade-up 0.7s var(--ease-out) 0.7s both; }
+  .hero__scroll  { animation: fade-up 0.7s var(--ease-out) 0.9s both,
+                              bounce-scroll 2.5s var(--ease-in-out) 1.6s infinite; }
+
+  /* ── Nav link active state (set by NavHighlight module) ────────
+     Must be in @layer states to beat @layer components nav-link rules. */
+  .nav-link.is-active,
+  .nav-desktop__link.is-active {
+    color: var(--color-accent);
+  }
+
+  /* Desktop active link — underline via pseudo-element, zero layout shift */
+  .nav-desktop__link.is-active {
+    position: relative;
+  }
+
+  .nav-desktop__link.is-active::after {
+    content: '';
+    position: absolute;
+    inset-block-end: -4px;
+    inset-inline: 0;
+    height: 1px;
+    background-color: var(--color-accent);
+  }
+
+} /* end @layer states */
+
+
+/* ══════════════════════════════════════════════════════════════════
+   BOOKING APP — Vue 3 component styles
+   Appended to @layer components via cascade; no @layer wrapper
+   needed since this file is the stylesheet — order is sufficient.
+   All booking styles are scoped under .booking-* class names.
+══════════════════════════════════════════════════════════════════ */
+
+@layer components {
+
+  /* ── Contact section booking wrapper ─────────────────────
+     Centers the button and adds breathing room above the grid. */
+  .contact__booking {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-block-start: var(--s-2xl);
+    margin-block-start: var(--s-lg);
+    border-block-start: 1px solid var(--color-rule);
+  }
+
+  /* ── Booking trigger button ───────────────────────────────
+     Two contexts:
+     • Default (hero / dark bg): white text, ghost border.
+     • .contact__booking context: espresso text, solid accent border.
+  ──────────────────────────────────────────────────────── */
+  .booking-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-sm);
+    font-family: var(--font-body);
+    font-size: var(--ft-sm);
+    font-weight: 500;
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    /* Default: dark context (hero overlay) */
+    color: var(--color-text-inv);
+    background: transparent;
+    padding: var(--s-sm) var(--s-xl);
+    border: 1px solid rgba(253, 250, 246, 0.4);
+    cursor: pointer;
+    transition:
+      background-color var(--dur-base) var(--ease-out),
+      color            var(--dur-base) var(--ease-out),
+      border-color     var(--dur-base) var(--ease-out);
+  }
+
+  .booking-trigger:hover {
+    background-color: rgba(253, 250, 246, 0.1);
+    border-color: rgba(253, 250, 246, 0.7);
+  }
+
+  /* Light context override — contact section sits on cream bg */
+  .contact__booking .booking-trigger {
+    /* Solid filled button — espresso bg, cream text */
+    background-color: var(--color-text);
+    color: var(--color-text-inv);
+    border-color: var(--color-text);
+    padding: var(--s-md) var(--s-2xl);
+    font-size: var(--ft-base);
+  }
+
+  .contact__booking .booking-trigger:hover {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  /* ── Overlay backdrop ────────────────────────────────────*/
+  .booking-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--z-modal);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    background-color: rgba(44, 31, 26, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    padding: var(--s-md);
+    overflow-y: auto;
+  }
+
+  /* Prevent body scroll when panel open */
+  body.booking-open { overflow: hidden; }
+
+  @media (min-width: 48rem) {
+    .booking-overlay {
+      align-items: center;
+      padding: var(--s-xl);
+    }
+  }
+
+  /* ── Panel container ─────────────────────────────────────*/
+  .booking-panel {
+    background-color: var(--color-bg);
+    width: min(42rem, 100%);
+    max-height: 90dvh;
+    overflow-y: auto;
+    padding: var(--s-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-lg);
+    outline: none; /* focus managed by JS, not ring */
+  }
+
+  @media (min-width: 48rem) {
+    .booking-panel { padding: var(--s-2xl); }
+  }
+
+  /* ── Panel header ────────────────────────────────────────*/
+  .booking-panel__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--s-md);
+    padding-block-end: var(--s-lg);
+    border-block-end: 1px solid var(--color-rule);
+  }
+
+  .booking-panel__title {
+    font-family: var(--font-display);
+    font-size: var(--ft-2xl);
+    font-weight: 400;
+    line-height: var(--lh-display);
+    letter-spacing: var(--ls-tight);
+    color: var(--color-text);
+  }
+
+  .booking-panel__title em { font-style: italic; color: var(--color-accent); }
+
+  .booking-panel__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    flex-shrink: 0;
+    font-size: var(--ft-md);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color var(--dur-fast) var(--ease-out);
+  }
+
+  .booking-panel__close:hover { color: var(--color-text); }
+
+  /* ── Success / error states ──────────────────────────────*/
+  .booking-panel__success,
+  .booking-panel__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-md);
+    padding-block: var(--s-2xl);
+    text-align: center;
+  }
+
+  .booking-panel__success i { font-size: var(--ft-3xl); color: var(--color-accent); }
+  .booking-panel__error  i  { font-size: var(--ft-3xl); color: #B85C38; }
+
+  .booking-panel__success h3,
+  .booking-panel__error  h3 {
+    font-family: var(--font-display);
+    font-size: var(--ft-xl);
+    font-weight: 400;
+    color: var(--color-text);
+  }
+
+  .booking-panel__success p,
+  .booking-panel__error  p {
+    font-size: var(--ft-base);
+    color: rgba(44, 31, 26, 0.65);
+    max-width: none;
+  }
+
+  /* ── Form ────────────────────────────────────────────────*/
+  .booking-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-xl);
+  }
+
+  .booking-form__fieldset {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-lg);
+  }
+
+  .booking-form__legend {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 500;
+    letter-spacing: var(--ls-widest);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    color: var(--color-accent);
+    margin-block-end: var(--s-xs);
+    display: flex;
+    align-items: center;
+    gap: var(--s-sm);
+    width: 100%;
+    float: left; /* prevent fieldset shrink */
+  }
+
+  /* ── Service selection ───────────────────────────────────*/
+  .booking-form__group-label {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 500;
+    letter-spacing: var(--ls-wide);
+    color: rgba(44, 31, 26, 0.55);
+    text-transform: uppercase;
+    margin-block-end: var(--s-xs);
+    max-width: none;
+  }
+
+  .booking-form__service-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2xs);
+  }
+
+  .booking-form__service-btn {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-md);
+    width: 100%;
+    padding: var(--s-sm) var(--s-md);
+    text-align: start;
+    border: 1px solid var(--color-rule);
+    background: transparent;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      border-color     var(--dur-fast) var(--ease-out);
+  }
+
+  .booking-form__service-btn:hover {
+    background-color: var(--color-bg-alt);
+    border-color: var(--color-accent);
+  }
+
+  .booking-form__service-btn.is-selected {
+    background-color: var(--color-bg-alt);
+    border-color: var(--color-accent);
+    outline: 1px solid var(--color-accent);
+    outline-offset: -1px;
+  }
+
+  .booking-form__service-name {
+    font-family: var(--font-display);
+    font-size: var(--ft-md);
+    font-weight: 400;
+    color: var(--color-text);
+  }
+
+  .booking-form__service-meta {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    color: var(--color-accent);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* ── Form fields ─────────────────────────────────────────*/
+  .booking-form__row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--s-md);
+  }
+
+  @media (min-width: 40rem) {
+    .booking-form__row { grid-template-columns: 1fr 1fr; }
+  }
+
+  .booking-form__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-2xs);
+  }
+
+  .booking-form__label {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    font-weight: 500;
+    letter-spacing: var(--ls-wide);
+    line-height: var(--lh-ui);
+    color: var(--color-text);
+  }
+
+  .booking-form__optional {
+    color: var(--color-text-muted);
+    font-weight: 300;
+  }
+
+  .booking-form__input {
+    font-family: var(--font-body);
+    font-size: var(--ft-base);
+    line-height: var(--lh-ui);
+    color: var(--color-text);
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-rule);
+    padding: var(--s-sm) var(--s-md);
+    width: 100%;
+    transition: border-color var(--dur-fast) var(--ease-out);
+    /* Remove default webkit styling on date inputs */
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .booking-form__input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(164, 119, 100, 0.2);
+  }
+
+  .booking-form__input.is-invalid {
+    border-color: #B85C38;
+  }
+
+  .booking-form__textarea { resize: vertical; min-height: 5rem; }
+
+  .booking-form__error {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    line-height: var(--lh-ui);
+    color: #B85C38;
+  }
+
+  /* ── Form footer ─────────────────────────────────────────*/
+  .booking-form__footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-sm);
+    padding-block-start: var(--s-lg);
+    border-block-start: 1px solid var(--color-rule);
+  }
+
+  .booking-form__fine-print {
+    font-family: var(--font-body);
+    font-size: var(--ft-xs);
+    color: var(--color-text-muted);
+    line-height: var(--lh-ui);
+    max-width: none;
+  }
+
+  /* ── Booking buttons ─────────────────────────────────────*/
+  .booking-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-xs);
+    font-family: var(--font-body);
+    font-size: var(--ft-sm);
+    font-weight: 500;
+    letter-spacing: var(--ls-wider);
+    text-transform: uppercase;
+    line-height: var(--lh-ui);
+    padding: var(--s-sm) var(--s-xl);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+      background-color var(--dur-fast) var(--ease-out),
+      color            var(--dur-fast) var(--ease-out),
+      border-color     var(--dur-fast) var(--ease-out),
+      opacity          var(--dur-fast) var(--ease-out);
+  }
+
+  .booking-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .booking-btn--primary {
+    background-color: var(--color-text);
+    color: var(--color-text-inv);
+    border-color: var(--color-text);
+  }
+
+  .booking-btn--primary:hover:not(:disabled) {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+  }
+
+  .booking-btn--ghost {
+    background-color: transparent;
+    color: var(--color-text);
+    border-color: var(--color-rule);
+  }
+
+  .booking-btn--ghost:hover {
+    background-color: var(--color-bg-alt);
+    border-color: var(--color-accent);
+  }
+
+} /* end @layer components (booking) */
+
+
+/* ══════════════════════════════════════════════════════════════════
+   CUSTOM SCROLLBAR
+   Modern: scrollbar-color + scrollbar-width (Firefox, Chrome 121+)
+   Legacy: ::-webkit-scrollbar pseudo-elements (Chrome/Safari/Edge)
+   Palette: espresso track, mocha thumb, ivory hover
+══════════════════════════════════════════════════════════════════ */
+@layer utilities {
+
+  /* Modern standard — Firefox + Chrome 121+ */
+  html {
+    scrollbar-color: var(--_mocha) rgba(44, 31, 26, 0.15);
+    scrollbar-width: thin;
+  }
+
+}
+
+@layer states {
+
+  /* Legacy webkit — Chrome/Safari/Edge */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(44, 31, 26, 0.08);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--_mocha);
+    border-radius: var(--radius-pill);
+    transition: background var(--dur-fast) var(--ease-out);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--_espresso);
+  }
+
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SCROLL TO TOP BUTTON
+   Fixed bottom-right. Fades + slides in after 400px scroll.
+   Espresso background, mocha accent on hover.
+   Respects prefers-reduced-motion.
+══════════════════════════════════════════════════════════════════ */
+@layer components {
+
+  .scroll-top {
+    /* Position */
+    position: fixed;
+    inset-block-end: var(--s-xl);
+    inset-inline-end: var(--s-xl);
+    z-index: var(--z-sticky);
+
+    /* Size — WCAG 2.5.5 minimum 44×44px */
+    width: 2.75rem;
+    height: 2.75rem;
+
+    /* Layout */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* Appearance */
+    background-color: var(--_espresso);
+    color: var(--_ivory);
+    border: 1px solid rgba(253, 250, 246, 0.15);
+    border-radius: var(--radius-pill);
+    font-size: var(--ft-sm);
+    cursor: pointer;
+
+    /* Hidden state — invisible + non-interactive until scrolled */
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 0.75rem;
+    pointer-events: none;
+
+    /* Transition */
+    transition:
+      opacity       var(--dur-base) var(--ease-out),
+      visibility    var(--dur-base) var(--ease-out),
+      translate     var(--dur-base) var(--ease-out),
+      background    var(--dur-fast) var(--ease-out),
+      border-color  var(--dur-fast) var(--ease-out);
+  }
+
+  /* Visible state — JS adds .is-visible */
+  .scroll-top.is-visible {
+    opacity: 1;
+    visibility: visible;
+    translate: 0 0;
+    pointer-events: auto;
+  }
+
+  /* Hover */
+  .scroll-top:hover {
+    background-color: var(--_mocha);
+    border-color: rgba(253, 250, 246, 0.35);
+  }
+
+  /* Focus */
+  .scroll-top:focus-visible {
+    outline: 2px solid var(--_mocha);
+    outline-offset: 3px;
+  }
+
+  /* Mobile — smaller inset so it doesn't crowd the booking CTA */
+  @media (max-width: 47.9375rem) {
+    .scroll-top {
+      inset-block-end: var(--s-lg);
+      inset-inline-end: var(--s-md);
+    }
+  }
+
+}
+
+@layer states {
+
+  /* Reduced motion — instant show/hide, no translate animation */
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-top {
+      transition:
+        opacity    var(--dur-fast) linear,
+        visibility var(--dur-fast) linear;
+      translate: 0 0;
+    }
+  }
+
+  /* Icon rotation — subtle upward nudge on hover */
+  .scroll-top:hover .scroll-top__icon {
+    translate: 0 -2px;
+    transition: translate var(--dur-fast) var(--ease-out);
+  }
+
+}
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SKIP LINK — WCAG 2.4.1 Bypass Blocks (Level A)
+  ═══════════════════════════════════════════════════════════ -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SITE HEADER
+       role="banner" — exactly one per page, wraps site-wide nav.
+  ═══════════════════════════════════════════════════════════ -->
+  <header class="site-header" id="site-header" role="banner">
+
+    <!-- Logo / wordmark — links to root, landmark-level -->
+    <a
+      class="site-logo"
+      href="/"
+      aria-label="Glow by Grace — return to home page">
+      Glow <span>by Grace</span>
+    </a>
+
+    <!-- ─── Mobile nav toggle (visible < 48rem) ─────────────
+         aria-expanded and aria-controls wired by JS.
+         aria-label updated by JS on open/close.
+    ──────────────────────────────────────────────────────── -->
+    <button
+      class="nav-toggle"
+      id="nav-toggle"
+      type="button"
+      aria-label="Open navigation menu"
+      aria-expanded="false"
+      aria-controls="primary-nav">
+      <!-- Single icon element — JS swaps fa-bars ↔ fa-xmark -->
+      <i class="fa-solid fa-bars" id="nav-icon" aria-hidden="true"></i>
+    </button>
+
+    <!-- ─── Desktop nav (hidden < 48rem, shown ≥ 48rem via CSS) ─
+         Separate <nav> landmark so SR users can find it independently.
+    ──────────────────────────────────────────────────────── -->
+    <nav class="nav-desktop" aria-label="Desktop navigation">
+
+      <ul class="nav-desktop__links" role="list">
+        <li><a class="nav-desktop__link" href="#about">About</a></li>
+        <li><a class="nav-desktop__link" href="#services">Services</a></li>
+        <li><a class="nav-desktop__link" href="#gallery">Gallery</a></li>
+        <li><a class="nav-desktop__link" href="#contact">Contact</a></li>
+      </ul>
+
+      <a class="nav-desktop__cta" href="#contact">
+        <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+        Book Now
+      </a>
+
+    </nav><!-- /.nav-desktop -->
+
+  </header><!-- /.site-header -->
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MOBILE NAV OVERLAY
+       Placed as a direct child of <body> — outside <header> so its
+       fixed stacking context is clean and independent of the header's.
+       aria-label="Primary navigation" distinguishes it from desktop nav.
+       inert on load — JS manages inert, is-open, body.nav-open.
+  ═══════════════════════════════════════════════════════════ -->
+  <nav
+    class="primary-nav"
+    id="primary-nav"
+    aria-label="Primary navigation"
+    inert>
+
+    <!-- Brand lockup — visible inside overlay for mobile context -->
+    <div class="nav-brand" aria-hidden="true">
+      <span class="nav-brand__logo">Glow <em>by Grace</em></span>
+      <span class="nav-brand__sub">Brow &amp; Lash Artist · Nashville, TN</span>
+    </div>
+
+    <!-- Hairline rule separating brand from links -->
+    <hr class="nav-brand__rule">
+
+    <ul class="nav-list" role="list">
+      <li><a class="nav-link" href="#about">About</a></li>
+      <li><a class="nav-link" href="#services">Services</a></li>
+      <li><a class="nav-link" href="#gallery">Gallery</a></li>
+      <li><a class="nav-link" href="#contact">Contact</a></li>
+    </ul>
+
+    <!-- Hairline rule separating links from CTA -->
+    <hr class="nav-cta__rule">
+
+    <a class="nav-cta-mobile" href="#contact">
+      <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+      Book Your Appointment
+    </a>
+
+  </nav><!-- /#primary-nav -->
+
+  <!-- Scroll to top button — JS adds/removes .is-visible -->
+  <button
+    class="scroll-top"
+    id="scroll-top"
+    type="button"
+    aria-label="Scroll to top of page"
+    hidden>
+    <i class="fa-solid fa-chevron-up scroll-top__icon" aria-hidden="true"></i>
+  </button>
+
+  <!-- ═══════════════════════════════════════════════════════════
+       MAIN — single <main> per page, id for skip-link target.
+  ═══════════════════════════════════════════════════════════ -->
+  <main id="main-content">
+
+
+    <!-- ─── HERO ──────────────────────────────────────────────
+         Full-viewport opening section.
+         isolation: isolate on .hero (CSS) scopes z-index
+         on ::bg (z:-2) and ::overlay (z:-1) pseudo-elements.
+         aria-labelledby connects the section to its h1.
+    ──────────────────────────────────────────────────────── -->
+    <section
+      class="hero"
+      id="hero"
+      aria-labelledby="hero-heading">
+
+      <!-- Background image layer — presentational -->
+      <div
+        class="hero__bg"
+        id="hero-bg"
+        role="presentation"
+        aria-hidden="true"></div>
+
+      <!-- Gradient overlay — presentational -->
+      <div
+        class="hero__overlay"
+        role="presentation"
+        aria-hidden="true"></div>
+
+      <!-- Hero content -->
+      <div class="hero__content">
+
+        <p class="hero__eyebrow" aria-hidden="true">
+          Brow &amp; Lash Artist · Nashville, TN
+        </p>
+
+        <h1 class="hero__title" id="hero-heading">
+          Glow<em>by Grace</em>
+        </h1>
+
+        <p class="hero__sub">
+          Effortless beauty, expertly crafted
+        </p>
+
+        <a class="hero__cta" href="#contact">
+          <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+          Book Your Appointment
+        </a>
+
+      </div><!-- /.hero__content -->
+
+      <!-- Scroll cue — decorative, hidden from AT -->
+      <div class="hero__scroll" aria-hidden="true">
+        <span>Scroll</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </div>
+
+    </section><!-- /.hero -->
+
+
+    <hr class="rule">
+
+
+    <!-- ─── ABOUT ──────────────────────────────────────────────
+         Section landmark. Two-column grid at md+:
+         image (figure) | copy (article).
+         aria-labelledby ties section to h2.
+    ──────────────────────────────────────────────────────── -->
+    <section
+      class="section section--default"
+      id="about"
+      aria-labelledby="about-heading">
+
+      <div class="container--wide">
+
+        <div class="about__grid reveal">
+
+          <!-- Portrait -->
+          <figure class="about__figure" aria-label="Portrait of Grace Monroe">
+            <img
+              class="about__img"
+              src="assets/img/meritt-thomas-aoQ4DYZLE_E-unsplash.webp"
+              alt="Grace Monroe, brow and lash artist, smiling warmly in her Nashville studio"
+              width="600"
+              height="800"
+              loading="lazy"
+              decoding="async">
+          </figure><!-- /.about__figure -->
+
+          <!-- Copy -->
+          <article class="about__body" aria-labelledby="about-heading">
+
+            <p class="section-label" aria-hidden="true">My Story</p>
+
+            <h2 class="about__title" id="about-heading">
+              Hi, I'm <em>Grace</em>
+            </h2>
+
+            <p class="about__text">
+              Beauty has always been my passion. What started as doing my
+              friends' eyebrows in college turned into a calling I couldn't
+              ignore. After years of training and perfecting my craft, I opened
+              Glow by Grace to share that passion with you.
+            </p>
+
+            <p class="about__text">
+              I believe beauty should feel effortless — enhancing what you
+              already have, never covering it up. Every face tells a story.
+              I'm here to help yours shine.
+            </p>
+
+            <footer>
+              <p class="about__sig">— Grace Monroe</p>
+            </footer>
+
+          </article><!-- /.about__body -->
+
+        </div><!-- /.about__grid -->
+
+      </div><!-- /.container--wide -->
+
+    </section><!-- /.about -->
+
+
+    <hr class="rule">
+
+
+    <!-- ─── SERVICES ────────────────────────────────────────────
+         Cream background section.
+         Two-column printed-menu layout at md+.
+         Each column is a group; each row is a service-item.
+         <data> encodes machine-readable price value.
+         aria-labelledby ties section to h2.
+    ──────────────────────────────────────────────────────── -->
+    <section
+      class="section section--alt"
+      id="services"
+      aria-labelledby="services-heading">
+
+      <div class="services__inner">
+
+        <header class="services__header reveal">
+          <h2 class="services__title" id="services-heading">
+            Services <em>&amp; Pricing</em>
+          </h2>
+          <p class="services__note no-measure">
+            All services by appointment only
+          </p>
+        </header>
+
+        <div class="services__cols">
+
+          <!-- Brow Services column -->
+          <section
+            class="service-group reveal"
+            aria-labelledby="brow-group-heading">
+
+            <h3 class="service-group__title" id="brow-group-heading">
+              Brow Services
+            </h3>
+
+            <ul role="list">
+
+              <li class="service-item">
+                <div class="service-item__left">
+                  <span class="service-item__name">Brow Shaping</span>
+                  <span class="service-item__desc">
+                    Wax &amp; tweeze to your perfect arch
+                  </span>
+                </div>
+                <div class="service-item__leader" aria-hidden="true"></div>
+                <data class="service-item__price" value="25">$25</data>
+              </li>
+
+              <li class="service-item">
+                <div class="service-item__left">
+                  <span class="service-item__name">Brow Tint</span>
+                  <span class="service-item__desc">
+                    Semi-permanent colour for fuller-looking brows
+                  </span>
+                </div>
+                <div class="service-item__leader" aria-hidden="true"></div>
+                <data class="service-item__price" value="20">$20</data>
+              </li>
+
+              <li class="service-item">
+                <div class="service-item__left">
+                  <span class="service-item__name">Brow Lamination</span>
+                  <span class="service-item__desc">
+                    Fluffy, lifted brows that last 6–8 weeks
+                  </span>
+                </div>
+                <div class="service-item__leader" aria-hidden="true"></div>
+                <data class="service-item__price" value="65">$65</data>
+              </li>
+
+              <li class="service-item">
+                <div class="service-item__left">
+                  <span class="service-item__name">The Full Brow</span>
+                  <span class="service-item__desc">
+                    Lamination + tint + shape — the works
+                  </span>
+                </div>
+                <div class="service-item__leader" aria-hidden="true"></div>
+                <data class="service-item__price" value="85">$85</data>
+              </li>
+
+            </ul>
+
+          </section><!-- /.service-group brow -->
+
+          <!-- Lash Services column -->
+          <section
+            class="service-group reveal"
+            data-delay="1"
+            aria-labelledby="lash-group-heading">
+
+            <h3 class="service-group__title" id="lash-group-heading">
+              Lash Services
+            </h3>
+
+            <ul role="list">
+
+              <li class="service-item">
+                <div class="service-item__left">
+                  <span class="service-item__name">Lash Lift</span>
+                  <span class="service-item__desc">
+                    Natural curl that lasts 6–8 weeks
+                  </span>
+                </div>
+                <div class="service-item__leader" aria-hidden="true"></div>
+                <data class="service-item__price" value="55">$55</data>
+              </li>
+
+              <li class="service-item">
+                <div class="service-item__left">
+                  <span class="service-item__name">Lash Tint</span>
+                  <span class="service-item__desc">
+                    Darker, more defined lashes
+                  </span>
+                </div>
+                <div class="service-item__leader" aria-hidden="true"></div>
+                <data class="service-item__price" value="25">$25</data>
+              </li>
+
+              <li class="service-item">
+                <div class="service-item__left">
+                  <span class="service-item__name">Lift &amp; Tint Combo</span>
+                  <span class="service-item__desc">
+                    The perfect no-mascara look
+                  </span>
+                </div>
+                <div class="service-item__leader" aria-hidden="true"></div>
+                <data class="service-item__price" value="70">$70</data>
+              </li>
+
+              <li class="service-item">
+                <div class="service-item__left">
+                  <span class="service-item__name">Classic Lash Extensions</span>
+                  <span class="service-item__desc">
+                    Natural, wispy full set
+                  </span>
+                </div>
+                <div class="service-item__leader" aria-hidden="true"></div>
+                <data class="service-item__price" value="150">$150</data>
+              </li>
+
+            </ul>
+
+          </section><!-- /.service-group lash -->
+
+        </div><!-- /.services__cols -->
+
+      </div><!-- /.services__inner -->
+
+    </section><!-- /.services -->
+
+
+    <!-- ─── GALLERY ────────────────────────────────────────────
+         No section padding — full-bleed grid.
+         <ul> of <li> → <figure> → <img> + <figcaption>.
+         role="list" restores list semantics removed by CSS.
+         First item has --featured modifier for layout.
+         aria-labelledby ties section to visually hidden h2.
+    ──────────────────────────────────────────────────────── -->
+    <section
+      class="gallery"
+      id="gallery"
+      aria-labelledby="gallery-heading">
+
+      <h2 class="sr-only" id="gallery-heading">Gallery</h2>
+
+      <ul class="gallery__grid" role="list">
+
+        <li class="gallery__item gallery__item--featured">
+          <figure>
+            <img
+              class="gallery__img"
+              src="assets/img/pexels-alirezamani-wedding-team-233485225-34607130.webp"
+              alt="Bold brows and dramatic lash extensions — the full Glow by Grace treatment"
+              width="800"
+              height="450"
+              loading="lazy"
+              decoding="async">
+            <figcaption class="gallery__caption">Lash &amp; Brow</figcaption>
+          </figure>
+        </li>
+
+        <li class="gallery__item">
+          <figure>
+            <img
+              class="gallery__img"
+              src="assets/img/pexels-estoymhrb-20765765.webp"
+              alt="Extreme close-up of volume lash extension placement on a single lash line"
+              width="400"
+              height="400"
+              loading="lazy"
+              decoding="async">
+            <figcaption class="gallery__caption">Lash Detail</figcaption>
+          </figure>
+        </li>
+
+        <li class="gallery__item">
+          <figure>
+            <img
+              class="gallery__img"
+              src="assets/img/pexels-gabrielpuyen-6135662.webp"
+              alt="Open eye showing beautifully applied volume lash extensions"
+              width="400"
+              height="400"
+              loading="lazy"
+              decoding="async">
+            <figcaption class="gallery__caption">Volume Lashes</figcaption>
+          </figure>
+        </li>
+
+        <li class="gallery__item">
+          <figure>
+            <img
+              class="gallery__img"
+              src="assets/img/pexels-gustavo-fring-7446922.webp"
+              alt="Lash artist carefully applying individual extensions during a client appointment"
+              width="400"
+              height="400"
+              loading="lazy"
+              decoding="async">
+            <figcaption class="gallery__caption">The Process</figcaption>
+          </figure>
+        </li>
+
+        <li class="gallery__item">
+          <figure>
+            <img
+              class="gallery__img"
+              src="assets/img/pexels-milangel-melendez-1162121836-21412169.webp"
+              alt="Extreme close-up of dramatic volume lash extensions on an open eye"
+              width="400"
+              height="400"
+              loading="lazy"
+              decoding="async">
+            <figcaption class="gallery__caption">Dramatic Lashes</figcaption>
+          </figure>
+        </li>
+
+      </ul><!-- /.gallery__grid -->
+
+    </section><!-- /.gallery -->
+
+
+    <hr class="rule">
+
+
+    <!-- ─── CONTACT ────────────────────────────────────────────
+         Cream background section.
+         Three column grid at md+; stacked at mobile.
+         Each card is a <div> (not article — no self-contained content).
+         <address> wraps contact info per HTML spec.
+         <time datetime> provides machine-readable hours.
+         aria-labelledby ties section to h2.
+    ──────────────────────────────────────────────────────── -->
+    <section
+      class="section section--alt"
+      id="contact"
+      aria-labelledby="contact-heading">
+
+      <div class="contact__inner">
+
+        <h2 class="contact__heading reveal" id="contact-heading">
+          Let's <em>Connect</em>
+        </h2>
+
+        <div class="contact__grid reveal" data-delay="1">
+
+          <!-- Location card -->
+          <div class="contact__card" aria-labelledby="loc-label">
+            <p class="contact__card-label" id="loc-label">Location</p>
+            <div class="contact__card-content">
+              <address>
+                <a
+                  href="https://maps.google.com/?q=123+Beauty+Lane+Suite+4+Nashville+TN+37201"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="123 Beauty Lane Suite 4, Nashville TN 37201 — open in Google Maps">
+                  123 Beauty Lane, Suite 4<br>
+                  Nashville, TN 37201
+                </a>
+              </address>
+            </div>
+          </div><!-- /.contact__card location -->
+
+          <!-- Hours card -->
+          <div class="contact__card" aria-labelledby="hrs-label">
+            <p class="contact__card-label" id="hrs-label">Hours</p>
+            <div class="contact__card-content">
+              <dl class="hours">
+
+                <div class="hours__row">
+                  <dt class="hours__day">Tue – Fri</dt>
+                  <dd>
+                    <time datetime="09:00">9am</time>
+                    –
+                    <time datetime="18:00">6pm</time>
+                  </dd>
+                </div>
+
+                <div class="hours__row">
+                  <dt class="hours__day">Saturday</dt>
+                  <dd>
+                    <time datetime="10:00">10am</time>
+                    –
+                    <time datetime="16:00">4pm</time>
+                  </dd>
+                </div>
+
+                <div class="hours__row">
+                  <dt class="hours__day">Sun – Mon</dt>
+                  <dd>Closed</dd>
+                </div>
+
+              </dl>
+            </div>
+          </div><!-- /.contact__card hours -->
+
+          <!-- Contact info card -->
+          <div class="contact__card" aria-labelledby="cnt-label">
+            <p class="contact__card-label" id="cnt-label">Contact</p>
+            <div class="contact__card-content">
+              <address>
+                <a href="tel:+16155551234">(615) 555-1234</a>
+                <a href="mailto:hello@glowbygrace.com">hello@glowbygrace.com</a>
+              </address>
+            </div>
+          </div><!-- /.contact__card contact -->
+
+        </div><!-- /.contact__grid -->
+
+        <!-- Vue 3 booking app — mounts here when #booking-app exists.
+             Vue replaces the fallback <a> with the full interactive component.
+             The <a> is visible immediately (no FOUC) and works without JS. -->
+        <div id="booking-app" class="contact__booking reveal" data-delay="2">
+          <!-- Fallback: visible with or without JS.
+               Vue replaces this entire contents on mount. -->
+          <a
+            class="booking-trigger"
+            href="mailto:hello@glowbygrace.com?subject=Booking%20Request"
+            aria-label="Book your appointment — sends email request">
+            <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+            Book Your Appointment
+          </a>
+        </div><!-- /#booking-app -->
+
+      </div><!-- /.contact__inner -->
+
+    </section><!-- /.contact -->
+
+
+  </main><!-- /#main-content -->
+
+
+  <!-- ═══════════════════════════════════════════════════════════
+       SITE FOOTER — landmark footer, exactly one per page.
+       Three-zone layout:
+         1. footer__statement  — full-width display brand line
+         2. footer__body       — 4-col grid: brand/social, nav, services, contact
+         3. footer__bottom     — hairline + copyright + credit strip
+  ═══════════════════════════════════════════════════════════ -->
+  <footer class="site-footer" role="contentinfo">
+
+    <!-- ── Zone 1: Brand statement ──────────────────────────
+         Full-width editorial display line. Cormorant at large scale.
+         aria-hidden — decorative duplication of the wordmark below.
+    ──────────────────────────────────────────────────────── -->
+    <div class="footer__statement" aria-hidden="true">
+      <p class="footer__statement-text">
+        Effortless beauty,<em> expertly crafted.</em>
+      </p>
+    </div>
+
+    <!-- ── Zone 2: Main footer grid ─────────────────────────
+         4 columns at lg+, 2 at sm+, 1 at base.
+    ──────────────────────────────────────────────────────── -->
+    <div class="footer__body">
+
+      <!-- Col 1: Brand + Social -->
+      <div class="footer__col footer__col--brand">
+
+        <a
+          class="footer__logo"
+          href="/"
+          aria-label="Glow by Grace — return to home page">
+          Glow <span>by Grace</span>
+        </a>
+
+        <p class="footer__quote">
+          "Enhancing what you already have —
+          never covering it up."
+        </p>
+
+        <p class="footer__tagline">
+          Brow &amp; Lash Artist ·
+          Nashville, Tennessee
+        </p>
+
+        <a class="footer__brand-cta" href="#booking-app">
+          <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+          Book an appointment
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
+
+        <ul class="footer__social" role="list" aria-label="Social media links">
+          <li>
+            <a
+              class="footer__social-link"
+              href="https://instagram.com/glowbygrace"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow on Instagram (opens in new tab)">
+              <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              class="footer__social-link"
+              href="https://facebook.com/glowbygrace"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow on Facebook (opens in new tab)">
+              <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              class="footer__social-link"
+              href="https://tiktok.com/@glowbygrace"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow on TikTok (opens in new tab)">
+              <i class="fa-brands fa-tiktok" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+
+      </div><!-- /.footer__col--brand -->
+
+      <!-- Cols 2–4 wrapper — becomes a 3-col sub-grid at md breakpoint -->
+      <div class="footer__cols-grid">
+
+      <!-- Col 2: Quick links -->
+      <nav class="footer__col footer__col--nav" aria-label="Footer quick links">
+        <h3 class="footer__col-heading">Quick Links</h3>
+        <ul class="footer__nav-list" role="list">
+          <li><a class="footer__nav-link" href="#about">About</a></li>
+          <li><a class="footer__nav-link" href="#services">Services</a></li>
+          <li><a class="footer__nav-link" href="#gallery">Gallery</a></li>
+          <li><a class="footer__nav-link" href="#contact">Contact</a></li>
+          <li><a class="footer__nav-link" href="#booking-app">Book Now</a></li>
+        </ul>
+      </nav><!-- /.footer__col--nav -->
+
+      <!-- Col 3: Services -->
+      <nav class="footer__col footer__col--services" aria-label="Footer services links">
+        <h3 class="footer__col-heading">Services</h3>
+        <ul class="footer__nav-list" role="list">
+          <li><a class="footer__nav-link" href="#services">Brow Shaping</a></li>
+          <li><a class="footer__nav-link" href="#services">Brow Lamination</a></li>
+          <li><a class="footer__nav-link" href="#services">Lash Lift</a></li>
+          <li><a class="footer__nav-link" href="#services">Lash Extensions</a></li>
+          <li><a class="footer__nav-link" href="#services">View All Services</a></li>
+        </ul>
+      </nav><!-- /.footer__col--services -->
+      </div><!-- /.footer__cols-grid -->
+
+      <!-- Col 4: Contact info -->
+      <div class="footer__col footer__col--contact">
+        <h3 class="footer__col-heading">Contact</h3>
+        <address class="footer__address">
+          <p>
+            <a
+              class="footer__address-link"
+              href="https://maps.google.com/?q=123+Beauty+Lane+Suite+4+Nashville+TN+37201"
+              target="_blank"
+              rel="noopener noreferrer">
+              123 Beauty Lane, Suite 4<br>
+              Nashville, TN 37201
+            </a>
+          </p>
+          <p>
+            <a class="footer__address-link" href="tel:+16155551234">
+              (615) 555-1234
+            </a>
+          </p>
+          <p>
+            <a class="footer__address-link" href="mailto:hello@glowbygrace.com">
+              hello@glowbygrace.com
+            </a>
+          </p>
+        </address>
+
+        <!-- Hours summary -->
+        <dl class="footer__hours">
+          <div class="footer__hours-row">
+            <dt>Tue – Fri</dt>
+            <dd>9am – 6pm</dd>
+          </div>
+          <div class="footer__hours-row">
+            <dt>Saturday</dt>
+            <dd>10am – 4pm</dd>
+          </div>
+          <div class="footer__hours-row">
+            <dt>Sun – Mon</dt>
+            <dd>Closed</dd>
+          </div>
+        </dl>
+
+      </div><!-- /.footer__col--contact -->
+
+
+    </div><!-- /.footer__body -->
+
+    <!-- ── Zone 3: Bottom bar ────────────────────────────────
+         Hairline rule above, copyright left, credit right.
+    ──────────────────────────────────────────────────────── -->
+    <div class="footer__bottom">
+
+      <p class="footer__copy">
+        &copy; <time datetime="2026">2026</time> Glow by Grace.
+        All rights reserved.
+      </p>
+
+      <p class="footer__credit">
+        Website by
+        <a
+          href="https://heather-cooper.com"
+          class="footer__credit-link"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="HC Web Labs — website by Heather Cooper (opens in new tab)">
+          HC Web Labs
+        </a>
+      </p>
+
+    </div><!-- /.footer__bottom -->
+
+  </footer><!-- /.site-footer -->
+
+
+  <!-- Vue 3 CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+
+  <script type="module">
+/**
+ * gbg-v3.js
+ * Glow by Grace — v3 JavaScript
+ *
+ * Architecture
+ * ─────────────────────────────────────────────────────────────────
+ * ES2022+ module · strict mode implied by <script type="module">
+ * Single file, no build step — Vue 3 loaded via CDN in HTML when needed.
+ *
+ * Responsibilities
+ * ─────────────────────────────────────────────────────────────────
+ * 1. Navigation  — mobile overlay open/close, focus trap, keyboard,
+ *                  icon swap, inert management, resize handling.
+ * 2. Header      — scroll state (is-scrolled class) via rAF throttle.
+ * 3. Parallax    — hero background translateY, respects reduced-motion.
+ * 4. Reveals     — IntersectionObserver → .is-visible on .reveal elements.
+ * 5. SmoothScroll— anchor links with header-height offset, reduced-motion.
+ * 6. NavHighlight — IntersectionObserver on sections → active nav link.
+ * 7. Vue mount   — progressive enhancement on #booking-app when present.
+ *
+ * State class names (must match gbg-v3.css exactly)
+ * ─────────────────────────────────────────────────────────────────
+ * .site-header.is-scrolled
+ * .primary-nav.is-open
+ * body.nav-open
+ * .reveal.is-visible
+ * .nav-desktop__link.is-active   (added in this file — CSS colours it)
+ */
+
+
+/* ══════════════════════════════════════════════════════════════════
+   CONFIG — single source of truth for magic values
+══════════════════════════════════════════════════════════════════ */
+const CONFIG = Object.freeze({
+  /** px — mirrors md breakpoint in gbg-v3.css (48rem × 16) */
+  NAV_BREAKPOINT: 768,
+
+  /** ms — mirrors CSS --dur-base (250ms) on .primary-nav transition */
+  NAV_TRANSITION: 250,
+
+  /** rootMargin for section highlight IntersectionObserver */
+  SECTION_MARGIN: '-20% 0px -60% 0px',
+
+  /** rootMargin for scroll reveals */
+  REVEAL_MARGIN: '0px 0px -8% 0px',
+
+  /** Threshold for reveal trigger */
+  REVEAL_THRESHOLD: 0.12,
+
+  /** px — scroll distance before header gains is-scrolled */
+  SCROLL_THRESHOLD: 60,
+
+  /** Hero parallax damping factor (0 = none, 1 = full) */
+  PARALLAX_FACTOR: 0.35,
+});
+
+
+/* ══════════════════════════════════════════════════════════════════
+   UTILITIES
+══════════════════════════════════════════════════════════════════ */
+
+/**
+ * Returns true if the user has requested reduced motion.
+ * @returns {boolean}
+ */
+const prefersReducedMotion = () =>
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+
+/**
+ * Selector shorthand — throws clearly if element missing in dev.
+ * @param {string} selector
+ * @param {Element|Document} [ctx=document]
+ * @returns {Element|null}
+ */
+const $ = (selector, ctx = document) => ctx.querySelector(selector);
+
+
+/**
+ * Multi-selector shorthand.
+ * @param {string} selector
+ * @param {Element|Document} [ctx=document]
+ * @returns {NodeList}
+ */
+const $$ = (selector, ctx = document) => ctx.querySelectorAll(selector);
+
+
+/**
+ * All focusable elements inside a container, in DOM order.
+ * @param {Element} container
+ * @returns {Element[]}
+ */
+const getFocusable = (container) => [
+  ...container.querySelectorAll(
+    'a[href], button:not([disabled]), input:not([disabled]), ' +
+    'select:not([disabled]), textarea:not([disabled]), ' +
+    '[tabindex]:not([tabindex="-1"]), details > summary'
+  ),
+];
+
+
+/**
+ * rAF-throttled scroll listener factory.
+ * @param {Function[]} callbacks — each receives no arguments
+ * @returns {Function} removeListener
+ */
+const onScroll = (callbacks) => {
+  let ticking = false;
+
+  const handler = () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        callbacks.forEach(cb => cb());
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+
+  window.addEventListener('scroll', handler, { passive: true });
+  return () => window.removeEventListener('scroll', handler);
+};
+
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE 1 — NAVIGATION
+   Mobile overlay with full WAI-ARIA APG compliance:
+   aria-expanded, aria-controls, aria-label, inert, focus trap,
+   Escape key, click-outside, resize handler.
+══════════════════════════════════════════════════════════════════ */
+const Navigation = (() => {
+
+  /* DOM refs */
+  const toggle    = $('#nav-toggle');
+  const icon      = $('#nav-icon');
+  const nav       = $('#primary-nav');
+  const navLinks  = nav ? $$('.nav-link', nav) : [];
+
+  /** Currently open state */
+  let isOpen = false;
+
+  /** Element to return focus to on close */
+  let returnFocus = null;
+
+  /**
+   * Open the mobile nav overlay.
+   */
+  function open() {
+    if (isOpen) return;
+    isOpen     = true;
+    returnFocus = document.activeElement;
+
+    // ARIA state
+    toggle?.setAttribute('aria-expanded', 'true');
+    toggle?.setAttribute('aria-label', 'Close navigation menu');
+
+    // Icon swap — FA class swap avoids CSS display:none vs unlayered FA conflict
+    icon?.classList.replace('fa-bars', 'fa-xmark');
+
+    // Show overlay
+    nav?.removeAttribute('inert');
+    nav?.classList.add('is-open');
+    document.body.classList.add('nav-open');
+    document.documentElement.classList.add('nav-open'); /* iOS Safari scroll lock */
+
+    // Move focus into nav after transition
+    setTimeout(() => {
+      const first = getFocusable(nav)[0];
+      first?.focus();
+    }, CONFIG.NAV_TRANSITION);
+  }
+
+  /**
+   * Close the mobile nav overlay.
+   * @param {boolean} [restoreFocus=true]
+   */
+  function close(restoreFocus = true) {
+    if (!isOpen) return;
+    isOpen = false;
+
+    // ARIA state
+    toggle?.setAttribute('aria-expanded', 'false');
+    toggle?.setAttribute('aria-label', 'Open navigation menu');
+
+    // Icon swap
+    icon?.classList.replace('fa-xmark', 'fa-bars');
+
+    // Hide overlay
+    nav?.classList.remove('is-open');
+    nav?.setAttribute('inert', '');
+    document.body.classList.remove('nav-open');
+    document.documentElement.classList.remove('nav-open');
+
+    // Return focus
+    if (restoreFocus) {
+      setTimeout(() => {
+        (returnFocus || toggle).focus();
+      }, CONFIG.NAV_TRANSITION);
+    }
+  }
+
+  /**
+   * Focus trap — cycle within nav while open.
+   * @param {KeyboardEvent} e
+   */
+  function trapFocus(e) {
+    if (!isOpen || e.key !== 'Tab') return;
+
+    const focusable = getFocusable(nav);
+    if (!focusable.length) return;
+
+    const first = focusable.at(0);
+    const last  = focusable.at(-1);
+
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  }
+
+  /**
+   * Initialise Navigation module.
+   */
+  function init() {
+    if (!toggle || !nav) return;
+
+    // Toggle button
+    toggle.addEventListener('click', () => isOpen ? close() : open());
+
+    // Close on nav link click (smooth scroll handles the actual scroll)
+    navLinks.forEach(link =>
+      link.addEventListener('click', () => close(false))
+    );
+
+    // Keyboard handlers
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        e.preventDefault();
+        close();
+      }
+      trapFocus(e);
+    });
+
+    // Click outside nav to close
+    nav?.addEventListener('click', (e) => {
+      // Only close if click landed directly on the overlay backdrop
+      if (e.target === nav) close();
+    });
+
+    // Resize — debounced, switch between mobile/desktop states
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (window.innerWidth >= CONFIG.NAV_BREAKPOINT) {
+          // At desktop: always force-close and clean up all state,
+          // regardless of isOpen — prevents stale state on resize.
+          isOpen = false;
+          toggle?.setAttribute('aria-expanded', 'false');
+          toggle?.setAttribute('aria-label', 'Open navigation menu');
+          icon?.classList.replace('fa-xmark', 'fa-bars');
+          nav?.classList.remove('is-open');
+          nav?.setAttribute('inert', '');      // overlay stays inert at desktop
+          document.body.classList.remove('nav-open');
+          document.documentElement.classList.remove('nav-open');
+        } else {
+          // At mobile: ensure inert is set if nav is closed
+          if (!isOpen) nav?.setAttribute('inert', '');
+        }
+      }, 150);
+    }, { passive: true });
+
+    // Init: at desktop the overlay is hidden by CSS (display:none) AND
+    // stays inert — it should never be accessible at desktop viewport.
+    // At mobile the overlay starts inert (set in HTML) until opened.
+    // No inert removal needed here — JS manages it on open/close only.
+
+    // Measure scrollbar width once and store as CSS custom property.
+    // Used by body.nav-open { padding-inline-end } to prevent layout shift
+    // when overflow:hidden removes the scrollbar.
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    document.documentElement.style.setProperty(
+      '--scrollbar-width',
+      `${scrollbarWidth}px`
+    );
+  }
+
+  return { init, open, close };
+
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE 2 — HEADER SCROLL STATE
+   Adds/removes .is-scrolled on .site-header via rAF scroll listener.
+══════════════════════════════════════════════════════════════════ */
+const HeaderScroll = (() => {
+
+  const header = $('#site-header');
+
+  function update() {
+    if (!header) return;
+    header.classList.toggle('is-scrolled', window.scrollY > CONFIG.SCROLL_THRESHOLD);
+  }
+
+  function init() {
+    if (!header) return;
+    update(); // set correct class on load (e.g. browser remembers scroll pos)
+  }
+
+  return { init, update };
+
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE 3 — PARALLAX
+   Translates hero background on Y axis as user scrolls.
+   No-ops silently if element missing or reduced-motion preferred.
+══════════════════════════════════════════════════════════════════ */
+const Parallax = (() => {
+
+  const bg = $('#hero-bg');
+
+  function update() {
+    if (!bg || prefersReducedMotion()) return;
+    bg.style.transform = `translateY(${window.scrollY * CONFIG.PARALLAX_FACTOR}px)`;
+  }
+
+  function init() {
+    if (!bg || prefersReducedMotion()) return;
+    update();
+  }
+
+  return { init, update };
+
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE 4 — SCROLL REVEALS
+   IntersectionObserver watches all .reveal elements.
+   Adds .is-visible when they enter the viewport.
+   Once visible, element is unobserved — animation runs once.
+══════════════════════════════════════════════════════════════════ */
+const Reveals = (() => {
+
+  function init() {
+    const elements = $$('.reveal');
+    if (!elements.length) return;
+
+    // If reduced-motion: reveal everything immediately, skip observer
+    if (prefersReducedMotion()) {
+      elements.forEach(el => el.classList.add('is-visible'));
+      return;
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: CONFIG.REVEAL_MARGIN,
+      threshold:  CONFIG.REVEAL_THRESHOLD,
+    });
+
+    elements.forEach(el => observer.observe(el));
+  }
+
+  return { init };
+
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE 5 — SMOOTH SCROLL
+   Intercepts anchor clicks and scrolls to target with header offset.
+   Falls back to instant-scroll if reduced-motion preferred.
+   Does not interfere with external links or fragment-only hrefs.
+══════════════════════════════════════════════════════════════════ */
+const SmoothScroll = (() => {
+
+  const header = $('#site-header');
+
+  function scrollTo(id) {
+    const target = document.getElementById(id);
+    if (!target) return;
+
+    const headerHeight = header ? header.offsetHeight : 0;
+    const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 8;
+
+    window.scrollTo({
+      top,
+      behavior: prefersReducedMotion() ? 'instant' : 'smooth',
+    });
+  }
+
+  function init() {
+    document.addEventListener('click', (e) => {
+      const anchor = e.target.closest('a[href^="#"]');
+      if (!anchor) return;
+
+      const href = anchor.getAttribute('href');
+      if (!href || href === '#') return;
+
+      const id = href.slice(1);
+      const target = document.getElementById(id);
+      if (!target) return;
+
+      e.preventDefault();
+      scrollTo(id);
+    });
+  }
+
+  return { init };
+
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE 6 — NAV HIGHLIGHT
+   IntersectionObserver on sections adds .is-active to matching
+   desktop and mobile nav links as user scrolls.
+   Uses a generous rootMargin so the active section is clearly in view.
+══════════════════════════════════════════════════════════════════ */
+const NavHighlight = (() => {
+
+  /** Map section id → all nav links pointing at it */
+  const linkMap = new Map();
+
+  function buildLinkMap() {
+    const sections = $$('section[id], .gallery[id]');
+    sections.forEach(section => {
+      const id = section.id;
+      const links = $$(`a[href="#${id}"]`);
+      if (links.length) linkMap.set(id, [...links]);
+    });
+  }
+
+  function clearAll() {
+    linkMap.forEach(links =>
+      links.forEach(link => link.classList.remove('is-active'))
+    );
+  }
+
+  function activate(id) {
+    clearAll();
+    const links = linkMap.get(id);
+    links?.forEach(link => link.classList.add('is-active'));
+  }
+
+  function init() {
+    buildLinkMap();
+    if (!linkMap.size) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) activate(entry.target.id);
+      });
+    }, {
+      rootMargin: CONFIG.SECTION_MARGIN,
+    });
+
+    linkMap.forEach((_, id) => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  }
+
+  return { init };
+
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE 7 — VUE 3 BOOKING APP
+   Progressive enhancement — mounts only when #booking-app exists.
+   Vue is loaded via CDN <script> in HTML before this module runs.
+   If Vue isn't available (or element missing), fails silently.
+
+   Currently provides a CTA button that opens a booking panel.
+   Designed to grow: form validation, service selection, time slots.
+══════════════════════════════════════════════════════════════════ */
+const BookingApp = (() => {
+
+  /**
+   * Vue 3 component — booking panel.
+   * Data-driven: services list, form state, submission handling.
+   */
+  const BookingComponent = {
+    name: 'BookingApp',
+
+    data() {
+      return {
+        /** Panel visibility */
+        isOpen: false,
+
+        /** Currently selected service (null = none) */
+        selectedService: null,
+
+        /** Form field values */
+        form: {
+          name:    '',
+          email:   '',
+          phone:   '',
+          date:    '',
+          notes:   '',
+        },
+
+        /** Submission state */
+        status: 'idle', // 'idle' | 'submitting' | 'success' | 'error'
+
+        /** Services list — mirrors HTML services section */
+        services: [
+          { id: 'brow-shaping',    group: 'Brow',  name: 'Brow Shaping',         price: 25,  duration: 30  },
+          { id: 'brow-tint',       group: 'Brow',  name: 'Brow Tint',            price: 20,  duration: 20  },
+          { id: 'brow-lamination', group: 'Brow',  name: 'Brow Lamination',      price: 65,  duration: 60  },
+          { id: 'full-brow',       group: 'Brow',  name: 'The Full Brow',        price: 85,  duration: 75  },
+          { id: 'lash-lift',       group: 'Lash',  name: 'Lash Lift',            price: 55,  duration: 60  },
+          { id: 'lash-tint',       group: 'Lash',  name: 'Lash Tint',            price: 25,  duration: 20  },
+          { id: 'lift-tint',       group: 'Lash',  name: 'Lift & Tint Combo',    price: 70,  duration: 75  },
+          { id: 'lash-extensions', group: 'Lash',  name: 'Classic Lash Extensions', price: 150, duration: 120 },
+        ],
+
+        /** Validation error messages */
+        errors: {},
+      };
+    },
+
+    computed: {
+      /** Services grouped by category */
+      servicesByGroup() {
+        return this.services.reduce((groups, service) => {
+          if (!groups[service.group]) groups[service.group] = [];
+          groups[service.group].push(service);
+          return groups;
+        }, {});
+      },
+
+      /** Whether the form is valid to submit */
+      isFormValid() {
+        return (
+          this.selectedService !== null &&
+          this.form.name.trim().length >= 2 &&
+          this.isValidEmail(this.form.email) &&
+          this.form.date !== ''
+        );
+      },
+
+      /** Today's date as YYYY-MM-DD (min value for date input) */
+      minDate() {
+        return new Date().toISOString().split('T')[0];
+      },
+    },
+
+    methods: {
+      /** Open the booking panel and trap scroll */
+      openPanel() {
+        this.isOpen = true;
+        document.body.classList.add('booking-open');
+        this.$nextTick(() => {
+          this.$refs.panel?.focus();
+        });
+      },
+
+      /** Close the panel and restore scroll */
+      closePanel() {
+        this.isOpen   = false;
+        this.status   = 'idle';
+        document.body.classList.remove('booking-open');
+      },
+
+      /** Select a service from the list */
+      selectService(service) {
+        this.selectedService = service;
+        // Clear service error if present
+        delete this.errors.service;
+      },
+
+      /** Simple email format check */
+      isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+      },
+
+      /** Validate all fields and populate errors */
+      validate() {
+        this.errors = {};
+
+        if (!this.selectedService) {
+          this.errors.service = 'Please select a service.';
+        }
+        if (this.form.name.trim().length < 2) {
+          this.errors.name = 'Please enter your full name.';
+        }
+        if (!this.isValidEmail(this.form.email)) {
+          this.errors.email = 'Please enter a valid email address.';
+        }
+        if (!this.form.date) {
+          this.errors.date = 'Please choose an appointment date.';
+        }
+
+        return Object.keys(this.errors).length === 0;
+      },
+
+      /**
+       * Handle form submission.
+       * Currently sends to a mailto: fallback.
+       * Replace the fetch() block with a real endpoint (PHP, Formspree, etc).
+       */
+      async submit() {
+        if (!this.validate()) return;
+
+        this.status = 'submitting';
+
+        // ── Real submission — uncomment and point at your endpoint ──
+        // try {
+        //   const response = await fetch('/api/booking', {
+        //     method:  'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({
+        //       service: this.selectedService,
+        //       ...this.form,
+        //     }),
+        //   });
+        //   if (!response.ok) throw new Error('Server error');
+        //   this.status = 'success';
+        // } catch {
+        //   this.status = 'error';
+        // }
+        // ─────────────────────────────────────────────────────────────
+
+        // ── Mailto fallback (replace with fetch above in production) ──
+        try {
+          const subject = encodeURIComponent(
+            `Booking Request — ${this.selectedService.name}`
+          );
+          const body = encodeURIComponent(
+            `Service: ${this.selectedService.name} ($${this.selectedService.price})\n` +
+            `Duration: ~${this.selectedService.duration} min\n` +
+            `Name: ${this.form.name}\n` +
+            `Email: ${this.form.email}\n` +
+            `Phone: ${this.form.phone || 'Not provided'}\n` +
+            `Date: ${this.form.date}\n` +
+            `Notes: ${this.form.notes || 'None'}`
+          );
+          window.location.href =
+            `mailto:hello@glowbygrace.com?subject=${subject}&body=${body}`;
+          this.status = 'success';
+        } catch {
+          this.status = 'error';
+        }
+      },
+
+      /** Reset form to initial state */
+      reset() {
+        this.selectedService = null;
+        this.form   = { name: '', email: '', phone: '', date: '', notes: '' };
+        this.errors = {};
+        this.status = 'idle';
+      },
+
+      /** Format price for display */
+      formatPrice: (price) => `$${price}`,
+    },
+
+    template: `
+      <!-- Booking trigger CTA -->
+      <button
+        class="booking-trigger"
+        type="button"
+        @click="openPanel"
+        :aria-expanded="isOpen.toString()"
+        aria-haspopup="dialog">
+        <i class="fa-regular fa-calendar" aria-hidden="true"></i>
+        Book Your Appointment
+      </button>
+
+      <!-- Booking panel — dialog pattern -->
+      <Teleport to="body">
+        <div
+          v-if="isOpen"
+          class="booking-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="booking-title"
+          ref="panel"
+          tabindex="-1"
+          @keydown.esc="closePanel"
+          @click.self="closePanel">
+
+          <div class="booking-panel">
+
+            <!-- Panel header -->
+            <header class="booking-panel__header">
+              <h2 class="booking-panel__title" id="booking-title">
+                Book Your <em>Appointment</em>
+              </h2>
+              <button
+                class="booking-panel__close"
+                type="button"
+                aria-label="Close booking panel"
+                @click="closePanel">
+                <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+              </button>
+            </header>
+
+            <!-- Success state -->
+            <div v-if="status === 'success'" class="booking-panel__success">
+              <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+              <h3>Request Sent!</h3>
+              <p>Grace will be in touch to confirm your appointment.</p>
+              <button class="booking-btn booking-btn--ghost" type="button" @click="reset">
+                Book Another
+              </button>
+            </div>
+
+            <!-- Error state -->
+            <div v-else-if="status === 'error'" class="booking-panel__error">
+              <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i>
+              <h3>Something went wrong</h3>
+              <p>Please try again or contact us directly at hello@glowbygrace.com</p>
+              <button class="booking-btn booking-btn--ghost" type="button" @click="status = 'idle'">
+                Try Again
+              </button>
+            </div>
+
+            <!-- Booking form -->
+            <form
+              v-else
+              class="booking-form"
+              @submit.prevent="submit"
+              novalidate>
+
+              <!-- Step 1: Service selection -->
+              <fieldset class="booking-form__fieldset">
+                <legend class="booking-form__legend">
+                  1. Choose a Service
+                  <span v-if="errors.service" class="booking-form__error" role="alert">
+                    {{ errors.service }}
+                  </span>
+                </legend>
+
+                <div
+                  v-for="(groupServices, groupName) in servicesByGroup"
+                  :key="groupName"
+                  class="booking-form__service-group">
+
+                  <p class="booking-form__group-label">{{ groupName }} Services</p>
+
+                  <ul class="booking-form__service-list" role="list">
+                    <li
+                      v-for="service in groupServices"
+                      :key="service.id">
+                      <button
+                        type="button"
+                        class="booking-form__service-btn"
+                        :class="{ 'is-selected': selectedService?.id === service.id }"
+                        @click="selectService(service)"
+                        :aria-pressed="(selectedService?.id === service.id).toString()">
+                        <span class="booking-form__service-name">
+                          {{ service.name }}
+                        </span>
+                        <span class="booking-form__service-meta">
+                          {{ formatPrice(service.price) }} · ~{{ service.duration }}min
+                        </span>
+                      </button>
+                    </li>
+                  </ul>
+
+                </div>
+              </fieldset>
+
+              <!-- Step 2: Contact details -->
+              <fieldset class="booking-form__fieldset">
+                <legend class="booking-form__legend">2. Your Details</legend>
+
+                <div class="booking-form__row">
+
+                  <div class="booking-form__field">
+                    <label class="booking-form__label" for="booking-name">
+                      Full Name <span aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      id="booking-name"
+                      class="booking-form__input"
+                      :class="{ 'is-invalid': errors.name }"
+                      type="text"
+                      v-model="form.name"
+                      autocomplete="name"
+                      required
+                      :aria-describedby="errors.name ? 'booking-name-error' : undefined">
+                    <span
+                      v-if="errors.name"
+                      id="booking-name-error"
+                      class="booking-form__error"
+                      role="alert">
+                      {{ errors.name }}
+                    </span>
+                  </div>
+
+                  <div class="booking-form__field">
+                    <label class="booking-form__label" for="booking-email">
+                      Email <span aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      id="booking-email"
+                      class="booking-form__input"
+                      :class="{ 'is-invalid': errors.email }"
+                      type="email"
+                      v-model="form.email"
+                      autocomplete="email"
+                      required
+                      :aria-describedby="errors.email ? 'booking-email-error' : undefined">
+                    <span
+                      v-if="errors.email"
+                      id="booking-email-error"
+                      class="booking-form__error"
+                      role="alert">
+                      {{ errors.email }}
+                    </span>
+                  </div>
+
+                </div>
+
+                <div class="booking-form__row">
+
+                  <div class="booking-form__field">
+                    <label class="booking-form__label" for="booking-phone">
+                      Phone <span class="booking-form__optional">(optional)</span>
+                    </label>
+                    <input
+                      id="booking-phone"
+                      class="booking-form__input"
+                      type="tel"
+                      v-model="form.phone"
+                      autocomplete="tel">
+                  </div>
+
+                  <div class="booking-form__field">
+                    <label class="booking-form__label" for="booking-date">
+                      Preferred Date <span aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      id="booking-date"
+                      class="booking-form__input"
+                      :class="{ 'is-invalid': errors.date }"
+                      type="date"
+                      v-model="form.date"
+                      :min="minDate"
+                      required
+                      :aria-describedby="errors.date ? 'booking-date-error' : undefined">
+                    <span
+                      v-if="errors.date"
+                      id="booking-date-error"
+                      class="booking-form__error"
+                      role="alert">
+                      {{ errors.date }}
+                    </span>
+                  </div>
+
+                </div>
+
+                <div class="booking-form__field">
+                  <label class="booking-form__label" for="booking-notes">
+                    Notes <span class="booking-form__optional">(optional)</span>
+                  </label>
+                  <textarea
+                    id="booking-notes"
+                    class="booking-form__input booking-form__textarea"
+                    v-model="form.notes"
+                    rows="3"
+                    placeholder="Allergies, skin sensitivities, or anything Grace should know…"></textarea>
+                </div>
+
+              </fieldset>
+
+              <!-- Submit -->
+              <footer class="booking-form__footer">
+                <button
+                  class="booking-btn booking-btn--primary"
+                  type="submit"
+                  :disabled="status === 'submitting'"
+                  :aria-busy="(status === 'submitting').toString()">
+                  <i
+                    v-if="status === 'submitting'"
+                    class="fa-solid fa-circle-notch fa-spin"
+                    aria-hidden="true"></i>
+                  <i
+                    v-else
+                    class="fa-regular fa-calendar-check"
+                    aria-hidden="true"></i>
+                  {{ status === 'submitting' ? 'Sending…' : 'Send Request' }}
+                </button>
+                <p class="booking-form__fine-print">
+                  Grace will confirm your appointment by email within 24 hours.
+                </p>
+              </footer>
+
+            </form>
+
+          </div><!-- /.booking-panel -->
+        </div><!-- /.booking-overlay -->
+      </Teleport>
+    `,
+  };
+
+  /**
+   * Mount the Vue booking app if the mount point exists.
+   * Fails silently if Vue CDN hasn't loaded or element is absent.
+   */
+  function init() {
+    const mountEl = document.getElementById('booking-app');
+    if (!mountEl) return;
+
+    if (typeof Vue === 'undefined') {
+      console.warn('[GBG] Vue not available — booking app not mounted.');
+      return;
+    }
+
+    const { createApp } = Vue;
+    createApp(BookingComponent).mount('#booking-app');
+  }
+
+  return { init };
+
+})();
+
+
+/* ══════════════════════════════════════════════════════════════════
+   INIT — DOMContentLoaded
+   Single consolidated scroll listener after all modules are ready.
+══════════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+
+  // Initialise all modules
+  Navigation.init();
+  HeaderScroll.init();
+  Parallax.init();
+  Reveals.init();
+  SmoothScroll.init();
+  NavHighlight.init();
+  BookingApp.init();
+  ScrollToTop.init();
+
+  // Single consolidated rAF-throttled scroll listener
+  // HeaderScroll, Parallax, and ScrollToTop share one scroll event
+  onScroll([
+    HeaderScroll.update,
+    Parallax.update,
+    ScrollToTop.update,
+  ]);
+
+});
+
+
+/* ══════════════════════════════════════════════════════════════════
+   MODULE 8 — SCROLL TO TOP
+   Shows after 400px scroll. Smooth-scrolls to top on click.
+   Uses the shared rAF scroll listener via exported update().
+   Respects prefers-reduced-motion.
+══════════════════════════════════════════════════════════════════ */
+const ScrollToTop = (() => {
+
+  const btn = document.getElementById('scroll-top');
+
+  /** Scroll threshold before button appears (px) — past hero + about + services */
+  const THRESHOLD = 1800;
+
+  function update() {
+    if (!btn) return;
+    const past = window.scrollY > THRESHOLD;
+    btn.classList.toggle('is-visible', past);
+    /* hidden attr controls AT visibility — toggle in sync */
+    btn.hidden = !past;
+  }
+
+  function init() {
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: prefersReducedMotion() ? 'instant' : 'smooth',
+      });
+      /* Return focus to skip link for keyboard users */
+      document.querySelector('.skip-link')?.focus();
+    });
+
+    update(); // set correct state on load
+  }
+
+  return { init, update };
+
+})();
+
+  </script>
+
+</body>
+</html>
